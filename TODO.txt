@@ -1,14 +1,2 @@
 !!!!Make a basic game in the form of a mod
-And other todo`s in code files
-source code refacor
-polymod script classes
-psych to altronix dialogue convertion
-dialogue editors?
-FIX FUCKING HSCRIPT!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-Better function calling for hscript (Maybe macro and async events(?)) 
-    Use macro for auto function callback
-      Something like @:scriptClass
-      Should make this script callbacks - on[Function](args), onPost[Function](args)
-New chart system (end work on it, lol, it started almost year ago)
-Save last played week and song in story mode and ability to start from save (Indie cross)
-end work with https://github.com/AltronMaxX/-FNF-AltronixEngine-Private/tree/new-hscript-system
+!!!!!!!!MOVE TO 0.3.0!!!!!!!! 
