@@ -6,7 +6,7 @@ name: Latest build release CI
 on:
   push:
     branches:
-      - main
+      - fnf-0.3.0
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -26,7 +26,7 @@ jobs:
       - name: Setting up Haxe
         uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.2
+          haxe-version: 4.3.4
           
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
@@ -67,8 +67,9 @@ jobs:
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          name: Latest build from action with id ${{github.run_number}}
+          name: Latest build of fnf-0.3.0 branch from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
+          prerelease: true
           files: |
             engine.zip
             engine-debug.zip
