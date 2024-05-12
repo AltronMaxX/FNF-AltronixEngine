@@ -1,35 +1,35 @@
-name: On pull request CI
+#name: On pull request CI
 
 # Controls when the workflow will run
-on: [pull_request]
+#on: [pull_request]
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
-jobs:
-  buildWindows:
+#jobs:
+  #buildWindows:
     # The type of runner that the job will run on
-    runs-on: windows-latest
+    #runs-on: windows-latest
     
-    permissions:
-       contents: write
+    #permissions:
+       #contents: write
     
     # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
+    #steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@main
-      - uses: krdlab/setup-haxe@master
-        with:
-          haxe-version: 4.3.2
+      #- uses: actions/checkout@main
+      #- uses: krdlab/setup-haxe@master
+        #with:
+          #haxe-version: 4.3.2
       # Runs a set of commands using the runners shell
-      - name: Windows build action
-        run: |
-          haxelib setup C:/haxelib
-          haxelib install hxcpp > /dev/null --quiet
-          haxelib install hmm --quiet
-          haxelib run hmm install --quiet
-          haxelib run lime build windows
-        shell: cmd
+      #- name: Windows build action
+        #run: |
+          #haxelib setup C:/haxelib
+          #haxelib install hxcpp > /dev/null --quiet
+          #haxelib install hmm --quiet
+          #haxelib run hmm install --quiet
+          #haxelib run lime build windows
+        #shell: cmd
         
-      - uses: actions/upload-artifact@main
-        with:
-          name: Windows Build
-          path: export/release/windows/bin
+      #- uses: actions/upload-artifact@main
+        #with:
+          #name: Windows Build
+          #path: export/release/windows/bin
