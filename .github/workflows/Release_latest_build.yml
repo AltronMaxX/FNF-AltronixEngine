@@ -22,7 +22,8 @@ jobs:
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@main
-        submodules: true
+        with:        
+          submodules: true
       
       - name: Setting up Haxe
         uses: krdlab/setup-haxe@master
