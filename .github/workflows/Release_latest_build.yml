@@ -37,7 +37,6 @@ jobs:
         with:
           key: cache-build-windows
           path: |
-            .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
             export/debug/windows/haxe/
@@ -102,7 +101,6 @@ jobs:
         uses: actions/cache/save@v3
         with:
           path: |
-            .haxelib/
             export/release/windows/haxe/
             export/release/windows/obj/
             export/debug/windows/haxe/
