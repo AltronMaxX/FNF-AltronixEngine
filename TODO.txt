@@ -1,2 +1,4 @@
 Make a basic game in the form of a mod
-And other todo`s in code files
+Multiplayer
+Localization
+FNFC usage??
