@@ -2,12 +2,12 @@ package funkin.play.notes.notestyle;
 
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFramesCollection;
-import funkin.data.animation.AnimationData;
 import funkin.data.IRegistryEntry;
-import funkin.graphics.FunkinSprite;
+import funkin.data.animation.AnimationData;
 import funkin.data.notestyle.NoteStyleData;
 import funkin.data.notestyle.NoteStyleRegistry;
 import funkin.data.notestyle.NoteStyleRegistry;
+import funkin.graphics.FunkinSprite;
 import funkin.util.assets.FlxAnimationUtil;
 
 using funkin.data.animation.AnimationData.AnimationDataUtil;

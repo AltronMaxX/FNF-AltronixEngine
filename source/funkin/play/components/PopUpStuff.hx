@@ -25,7 +25,7 @@ class PopUpStuff extends FlxTypedGroup<FlxSprite>
 
     var ratingPath:String = daRating;
 
-    if (PlayState.instance.currentStageId.startsWith('school')) ratingPath = "weeb/pixelUI/" + ratingPath + "-pixel";
+    if (PlayState.instance.currentStageId.startsWith('school')) ratingPath = "pixelUI/" + ratingPath + "-pixel";
 
     var rating:FunkinSprite = FunkinSprite.create(0, 0, ratingPath);
     rating.scrollFactor.set(0.2, 0.2);
@@ -78,7 +78,7 @@ class PopUpStuff extends FlxTypedGroup<FlxSprite>
 
     if (PlayState.instance.currentStageId.startsWith('school'))
     {
-      pixelShitPart1 = 'weeb/pixelUI/';
+      pixelShitPart1 = 'pixelUI/';
       pixelShitPart2 = '-pixel';
     }
     var comboSpr:FunkinSprite = FunkinSprite.create(pixelShitPart1 + 'combo' + pixelShitPart2);

@@ -190,11 +190,11 @@ class Countdown
       switch (index)
       {
         case TWO:
-          spritePath = 'weeb/pixelUI/ready-pixel';
+          spritePath = 'pixelUI/ready-pixel';
         case ONE:
-          spritePath = 'weeb/pixelUI/set-pixel';
+          spritePath = 'pixelUI/set-pixel';
         case GO:
-          spritePath = 'weeb/pixelUI/date-pixel';
+          spritePath = 'pixelUI/date-pixel';
         default:
           // null
       }
