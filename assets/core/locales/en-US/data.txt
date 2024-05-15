@@ -1,6 +1,0 @@
-flag	content
-$MISSING_FLAGS	<X> localization flags are missing:
-$MISSING_FILES	<X> localization files are missing:
-$FONT_NAME	vcr.ttf
-$ENGINE_START	Succesfully find and loaded locales!
-$VERSION	Game version: <version>

@@ -1,11 +1,2 @@
-0.5 (Currently in development)
- - Two players mode in freeplay songs (beta)
- - Firetongue localization system
- - DialogueBox.hx rework
- - Credits editor (not now)
- - Moved all characters stuff in one folder
- - Moved all songs stuff in one folder
- - Custom achievements (wip)
- - Toggle downscroll and middlescroll while playing song
- - Song score text rewrite (now it's multiple text, not one)
- - Song preview in Freeplay
+1.0.0
+ - Move to Friday Night Funkin' 0.3.0 engine

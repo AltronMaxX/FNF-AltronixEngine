@@ -1,8 +1,8 @@
 # More Information on Contributing to Altronix Engine
 
 ## Branches
-`main` is the repository's main branch, so people can clone a stable Altronix Engine to work on their mods. However, this means that Pull Requests will default to merge into
-`main` instead of `develop`.
+`stable` is the repository's main branch, so people can clone a stable Altronix Engine to work on their mods. However, this means that Pull Requests will default to merge into
+`stable` instead of `develop`.
 
 ### If your pull request changes the engine, it merges into DEVELOP.
 
