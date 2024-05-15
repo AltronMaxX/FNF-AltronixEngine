@@ -6,30 +6,30 @@ name: Latest build release CI
 on:
   push:
     branches:
-      - fnf-0.3.0
+      - develop
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   buildWindows:
     # The type of runner that the job will run on
     runs-on: windows-latest
-    
+
     permissions:
        contents: write
        actions: write
-    
+
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@main
-        with:        
+        with:
           submodules: true
-      
+
       - name: Setting up Haxe
         uses: krdlab/setup-haxe@master
         with:
           haxe-version: 4.3.4
-          
+
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
         id: cache-restore
@@ -41,7 +41,7 @@ jobs:
             export/release/windows/obj/
             export/debug/windows/haxe/
             export/debug/windows/obj/
-            
+
       # Runs a set of commands using the runners shell
       - name: Setup everything and build release version
         run: |
@@ -51,24 +51,24 @@ jobs:
           haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd
-        
+
       - name: Make release zip
         run: |
           7z a -tzip "engine.zip" "./export/release/windows/bin/*"
-          
+
       - name: Build debug version
         run: |
           haxelib run lime build windows -debug
         shell: cmd
-          
+
       - name: Make debug zip
         run: |
           7z a -tzip "engine-debug.zip" "./export/debug/windows/bin/*"
-         
+
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          name: Latest build of fnf-0.3.0 branch from action with id ${{github.run_number}}
+          name: Latest dev build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
           prerelease: true
           target_commitish: "fnf-0.3.0"
@@ -77,7 +77,7 @@ jobs:
             engine-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          
+
       - name: Clearing already existing cache
         uses: actions/github-script@v6
         with:
@@ -97,7 +97,7 @@ jobs:
                 console.log("Cache cleared.")
               }
             }
-          
+
       - name: Save new cache
         uses: actions/cache/save@v3
         with:

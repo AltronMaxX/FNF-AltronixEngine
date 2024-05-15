@@ -112,8 +112,8 @@ class MainMenuState extends MusicBeatState
     // In order to prevent popup blockers from triggering,
     // we need to open the link as an immediate result of a keypress event,
     // so we can't wait for the flicker animation to complete.
-    var hasPopupBlocker = #if web true #else false #end;
-    createMenuItem('merch', 'mainmenu/merch', selectMerch, hasPopupBlocker);
+    /*var hasPopupBlocker = #if web true #else false #end;
+      createMenuItem('merch', 'mainmenu/merch', selectMerch, hasPopupBlocker); */
     #end
 
     createMenuItem('options', 'mainmenu/options', function() {
