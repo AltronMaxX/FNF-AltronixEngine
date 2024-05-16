@@ -33,7 +33,7 @@ jobs:
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
         id: cache-restore
-        uses: actions/cache/restore@v3
+        uses: actions/cache/restore@v4
         with:
           key: cache-build-windows
           path: |
@@ -71,7 +71,7 @@ jobs:
           name: Latest dev build from action with id ${{github.run_number}}
           tag_name: Actions_Build_${{github.run_number}}
           prerelease: true
-          target_commitish: "fnf-0.3.0"
+          target_commitish: "develop"
           files: |
             engine.zip
             engine-debug.zip
@@ -99,7 +99,7 @@ jobs:
             }
 
       - name: Save new cache
-        uses: actions/cache/save@v3
+        uses: actions/cache/save@v4
         with:
           path: |
             export/release/windows/haxe/
