@@ -148,6 +148,25 @@ class Preferences
   }
 
   /**
+   * Changes funkin score text to altronix score text.
+   * @default `true`
+   */
+  public static var advancedScoreText(get, set):Bool;
+
+  static function get_advancedScoreText():Bool
+  {
+    return Save?.instance?.options?.advancedScoreText ?? false;
+  }
+
+  static function set_advancedScoreText(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.advancedScoreText = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * Loads the user's preferences from the save data and apply them.
    */
   public static function init():Void

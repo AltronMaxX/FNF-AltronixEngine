@@ -88,6 +88,7 @@ class Save
           inputOffset: 0,
           audioVisualOffset: 0,
           coloredHealthBar: false,
+          advancedScoreText: true,
 
           controls:
             {
@@ -888,6 +889,12 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var coloredHealthBar:Bool;
+
+  /**
+   * Changes funkin score text to altronix score text.
+   * @default `true`
+   */
+  var advancedScoreText:Bool;
 
   var controls:
     {

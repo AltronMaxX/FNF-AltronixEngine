@@ -71,6 +71,9 @@ class PreferencesMenu extends Page
       function(value:Bool):Void {
         Preferences.coloredHealthBar = value;
       }, Preferences.coloredHealthBar);
+    createPrefItemCheckbox('Advanced Score Text', 'Changes funkin score text to altronix score text..', function(value:Bool):Void {
+      Preferences.advancedScoreText = value;
+    }, Preferences.advancedScoreText);
   }
 
   function createPrefItemCheckbox(prefName:String, prefDesc:String, onChange:Bool->Void, defaultValue:Bool):Void

@@ -1,5 +1,6 @@
 package funkin.play;
 
+import altronix.play.components.ScoreText;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -190,6 +191,11 @@ class PlayState extends MusicBeatSubState
    * TODO: Move this to its own class.
    */
   public var songScore:Int = 0;
+
+  /**
+   * Player accuracy.
+   */
+  public var accuracy:Float = 0.0;
 
   /**
    * Start at this point in the song once the countdown is done.
@@ -416,6 +422,18 @@ class PlayState extends MusicBeatSubState
   var initialized:Bool = false;
 
   /**
+   * Stores all note modifiers.
+   * Used for accuracy calculation
+  **/
+  var totalNoteModifiers:Float = 0.0;
+
+  /**
+   * Counts all player passed notes.
+   * Used for accuracy calculation
+  **/
+  var totalNotes:Float = 0.0;
+
+  /**
    * A group of audio tracks, used to play the song's vocals.
    */
   public var vocals:VoicesGroup;
@@ -434,7 +452,7 @@ class PlayState extends MusicBeatSubState
   /**
    * The FlxText which displays the current score.
    */
-  var scoreText:FlxText;
+  var scoreText:ScoreText;
 
   /**
    * The bar which displays the player's health.
@@ -1522,16 +1540,13 @@ class PlayState extends MusicBeatSubState
     add(healthBar);
 
     // The score text below the health bar.
-    scoreText = new FlxText(healthBarBG.x + healthBarBG.width - 190, healthBarBG.y + 30, 0, '', 20);
-    scoreText.setFormat(Paths.font('vcr.ttf'), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
-    scoreText.scrollFactor.set();
-    scoreText.zIndex = 802;
+    scoreText = new ScoreText(healthBarBG.x, healthBarBG.y + 30);
+    scoreText.zIndex = 851;
     add(scoreText);
 
     // Move the health bar to the HUD camera.
     healthBar.cameras = [camHUD];
     healthBarBG.cameras = [camHUD];
-    scoreText.cameras = [camHUD];
   }
 
   /**
@@ -2008,15 +2023,16 @@ class PlayState extends MusicBeatSubState
    */
   function updateScoreText():Void
   {
+    scoreText.updateTexts();
     // TODO: Add functionality for modules to update the score text.
-    if (isBotPlayMode)
-    {
-      scoreText.text = 'Bot Play Enabled';
-    }
-    else
-    {
-      scoreText.text = 'Score:' + songScore;
-    }
+    /*if (isBotPlayMode)
+      {
+        scoreText.text = 'Bot Play Enabled';
+      }
+      else
+      {
+        scoreText.text = 'Score:' + songScore;
+    }*/
   }
 
   /**
@@ -2391,6 +2407,8 @@ class PlayState extends MusicBeatSubState
 
     var score = Scoring.scoreNote(noteDiff, PBOT1);
     var daRating = Scoring.judgeNote(noteDiff, PBOT1);
+    totalNoteModifiers += Scoring.getNoteModifier(noteDiff, PBOT1);
+    totalNotes++;
 
     var healthChange = 0.0;
     switch (daRating)
@@ -2474,6 +2492,10 @@ class PlayState extends MusicBeatSubState
       if (Highscore.tallies.combo >= 10) comboPopUps.displayCombo(0);
       Highscore.tallies.combo = 0;
     }
+
+    scoreText.onMiss();
+
+    totalNotes++;
 
     if (playSound)
     {
@@ -2642,6 +2664,8 @@ class PlayState extends MusicBeatSubState
       default:
         FlxG.log.error('Wuh? Buh? Guh? Note hit judgement was $daRating!');
     }
+
+    accuracy = Math.max(0, (totalNoteModifiers / totalNotes) * 100);
 
     health += healthChange;
 
