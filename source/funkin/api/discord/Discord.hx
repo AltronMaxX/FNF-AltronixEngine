@@ -13,7 +13,7 @@ class DiscordClient
     trace("Discord Client starting...");
     DiscordRpc.start(
       {
-        clientID: "814588678700924999",
+        clientID: "489437279799083028",
         onReady: onReady,
         onError: onError,
         onDisconnected: onDisconnected
