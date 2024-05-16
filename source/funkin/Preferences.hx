@@ -129,6 +129,25 @@ class Preferences
   }
 
   /**
+   * Changes default health bar colors to characters dominant color from health icon.
+   * @default `false`
+   */
+  public static var coloredHealthBar(get, set):Bool;
+
+  static function get_coloredHealthBar():Bool
+  {
+    return Save?.instance?.options?.coloredHealthBar ?? false;
+  }
+
+  static function set_coloredHealthBar(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.coloredHealthBar = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * Loads the user's preferences from the save data and apply them.
    */
   public static function init():Void

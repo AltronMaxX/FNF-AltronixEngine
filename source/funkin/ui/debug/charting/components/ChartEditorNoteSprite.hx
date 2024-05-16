@@ -2,9 +2,9 @@ package funkin.ui.debug.charting.components;
 
 import flixel.FlxObject;
 import flixel.FlxSprite;
-import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxAtlasFrames;
 import flixel.graphics.frames.FlxFrame;
+import flixel.graphics.frames.FlxFramesCollection;
 import flixel.graphics.frames.FlxTileFrames;
 import flixel.math.FlxPoint;
 import funkin.data.song.SongData.SongNoteData;
@@ -119,8 +119,8 @@ class ChartEditorNoteSprite extends FlxSprite
     }
 
     // Pixel notes
-    var graphicPixel = FlxG.bitmap.add(Paths.image('pixelUI/arrows-pixels', 'week6'), false, null);
-    if (graphicPixel == null) trace('ERROR: Could not load graphic: ' + Paths.image('pixelUI/arrows-pixels', 'week6'));
+    var graphicPixel = FlxG.bitmap.add(Paths.image('pixelUI/arrows-pixels', 'shared'), false, null);
+    if (graphicPixel == null) trace('ERROR: Could not load graphic: ' + Paths.image('pixelUI/arrows-pixels', 'shared'));
     var frameCollectionPixel = FlxTileFrames.fromGraphic(graphicPixel, new FlxPoint(17, 17));
     for (i in 0...frameCollectionPixel.frames.length)
     {

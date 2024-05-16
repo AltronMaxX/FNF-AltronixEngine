@@ -4,10 +4,10 @@ import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import funkin.ui.AtlasText.AtlasFont;
-import funkin.ui.options.OptionsState.Page;
 import funkin.graphics.FunkinCamera;
+import funkin.ui.AtlasText.AtlasFont;
 import funkin.ui.TextMenuList.TextMenuItem;
+import funkin.ui.options.OptionsState.Page;
 
 class PreferencesMenu extends Page
 {
@@ -67,6 +67,10 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Auto Pause', 'Automatically pause the game when it loses focus', function(value:Bool):Void {
       Preferences.autoPause = value;
     }, Preferences.autoPause);
+    createPrefItemCheckbox('Colored Health Bar', 'Changes default health bar colours to character dominant color from health icon.',
+      function(value:Bool):Void {
+        Preferences.coloredHealthBar = value;
+      }, Preferences.coloredHealthBar);
   }
 
   function createPrefItemCheckbox(prefName:String, prefDesc:String, onChange:Bool->Void, defaultValue:Bool):Void

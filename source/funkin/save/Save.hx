@@ -1,15 +1,13 @@
 package funkin.save;
 
 import flixel.util.FlxSave;
-import funkin.save.migrator.SaveDataMigrator;
-import thx.semver.Version;
 import funkin.input.Controls.Device;
 import funkin.save.migrator.RawSaveData_v1_0_0;
 import funkin.save.migrator.SaveDataMigrator;
 import funkin.ui.debug.charting.ChartEditorState.ChartEditorLiveInputStyle;
 import funkin.ui.debug.charting.ChartEditorState.ChartEditorTheme;
-import thx.semver.Version;
 import funkin.util.SerializerUtil;
+import thx.semver.Version;
 
 @:nullSafety
 class Save
@@ -53,7 +51,8 @@ class Save
   public function new(?data:RawSaveData)
   {
     if (data == null) this.data = Save.getDefault();
-    else this.data = data;
+    else
+      this.data = data;
   }
 
   public static function getDefault():RawSaveData
@@ -88,6 +87,7 @@ class Save
           autoPause: true,
           inputOffset: 0,
           audioVisualOffset: 0,
+          coloredHealthBar: false,
 
           controls:
             {
@@ -882,6 +882,12 @@ typedef SaveDataOptions =
    * @default `0`
    */
   var audioVisualOffset:Int;
+
+  /**
+   * Changes default health bar colors to characters dominant color from health icon.
+   * @default `false`
+   */
+  var coloredHealthBar:Bool;
 
   var controls:
     {
