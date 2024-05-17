@@ -1,5 +1,7 @@
 package funkin.play.song;
 
+import funkin.data.song.importer.FNFLegacyData;
+import funkin.data.song.importer.FNFLegacyImporter;
 import funkin.data.song.SongData.SongChartData;
 import funkin.data.song.SongData.SongMetadata;
 import funkin.util.SerializerUtil;
@@ -58,6 +60,22 @@ class SongSerializer
       var songChartData:SongChartData = data.parseJSON();
 
       if (songChartData != null) callback(songChartData);
+      else // Try to parse as legacy chart
+      {
+        var fnfLegacyData:Null<FNFLegacyData> = FNFLegacyImporter.parseLegacyDataRaw(data, fileReference.name);
+
+        if (fnfLegacyData == null)
+        {
+          return;
+        }
+
+        var diff = "normal";
+        var a = fileReference.name.split('.')[0].split('-');
+        if (a[1] != null) diff = a[1];
+
+        songChartData = FNFLegacyImporter.migrateChartData(fnfLegacyData, diff);
+        callback(songChartData);
+      }
     });
   }
 
