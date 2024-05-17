@@ -89,6 +89,7 @@ class Save
           audioVisualOffset: 0,
           coloredHealthBar: false,
           advancedScoreText: true,
+          songPositionBar: false,
 
           controls:
             {
@@ -895,6 +896,12 @@ typedef SaveDataOptions =
    * @default `true`
    */
   var advancedScoreText:Bool;
+
+  /**
+   * Adds song position bar.
+   * @default `false`
+   */
+  var songPositionBar:Bool;
 
   var controls:
     {

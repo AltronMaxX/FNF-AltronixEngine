@@ -167,6 +167,25 @@ class Preferences
   }
 
   /**
+   * Adds song position bar.
+   * @default `false`
+   */
+  public static var songPositionBar(get, set):Bool;
+
+  static function get_songPositionBar():Bool
+  {
+    return Save?.instance?.options?.songPositionBar ?? false;
+  }
+
+  static function set_songPositionBar(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.songPositionBar = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * Loads the user's preferences from the save data and apply them.
    */
   public static function init():Void

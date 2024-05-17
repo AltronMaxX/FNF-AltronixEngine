@@ -1,6 +1,7 @@
 package funkin.play;
 
 import altronix.play.components.ScoreText;
+import altronix.play.components.SongPosBar;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSubState;
@@ -455,6 +456,11 @@ class PlayState extends MusicBeatSubState
   var scoreText:ScoreText;
 
   /**
+   * The bar which displays the song position.
+   */
+  var songPositionBar:SongPosBar;
+
+  /**
    * The bar which displays the player's health.
    * Dynamically updated based on the value of `healthLerp` (which is based on `health`).
    */
@@ -563,7 +569,7 @@ class PlayState extends MusicBeatSubState
   /**
    * The length of the current song, in milliseconds.
    */
-  var currentSongLengthMs(get, never):Float;
+  public var currentSongLengthMs(get, never):Float;
 
   function get_currentSongLengthMs():Float
   {
@@ -1539,6 +1545,13 @@ class PlayState extends MusicBeatSubState
     healthBar.zIndex = 801;
     add(healthBar);
 
+    if (Preferences.songPositionBar && !isMinimalMode)
+    {
+      songPositionBar = new SongPosBar();
+      songPositionBar.zIndex = 802;
+      add(songPositionBar);
+    }
+
     // The score text below the health bar.
     scoreText = new ScoreText(healthBarBG.x, healthBarBG.y + 30);
     scoreText.zIndex = 851;
@@ -1685,7 +1698,10 @@ class PlayState extends MusicBeatSubState
     }
 
     // CREATE HEALTH BAR WITH CHARACTERS COLORS
-    if (Preferences.coloredHealthBar && !isMinimalMode) healthBar.createFilledBar(iconP2.getDominantColor(), iconP1.getDominantColor());
+    if (Preferences.coloredHealthBar) healthBar.createFilledBar(iconP2.getDominantColor(), iconP1.getDominantColor());
+
+    // CREATE SONG POSITION BAR
+    if (Preferences.songPositionBar) songPositionBar.initSongPosBar();
 
     //
     // ADD CHARACTERS TO SCENE
