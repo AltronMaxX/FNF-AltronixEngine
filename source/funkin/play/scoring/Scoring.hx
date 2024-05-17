@@ -220,7 +220,7 @@ class Scoring
         // Fancy equation.
         var factor:Float = 1.0 - (1.0 / (1.0 + Math.exp(-PBOT1_SCORING_SLOPE * (absTiming - PBOT1_SCORING_OFFSET))));
 
-        PBOT1_MAX_MODIFIER * factor + PBOT1_MIN_MODIFIER;
+        factor < 0.1 ? PBOT1_MIN_MODIFIER : factor;
     }
   }
 
