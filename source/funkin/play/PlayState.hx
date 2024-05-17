@@ -2516,7 +2516,9 @@ class PlayState extends MusicBeatSubState
     if (playSound)
     {
       vocals.playerVolume = 0;
-      FunkinSound.playOnce(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.5, 0.6));
+      FunkinSound.playOnce(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2), function() {
+        vocals.playerVolume = 1;
+      });
     }
   }
 
@@ -2571,7 +2573,9 @@ class PlayState extends MusicBeatSubState
     if (event.playSound)
     {
       vocals.playerVolume = 0;
-      FunkinSound.playOnce(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2));
+      FunkinSound.playOnce(Paths.soundRandom('missnote', 1, 3), FlxG.random.float(0.1, 0.2), function() {
+        vocals.playerVolume = 1;
+      });
     }
   }
 
@@ -2655,8 +2659,6 @@ class PlayState extends MusicBeatSubState
       // comboPopUps.displayRating('miss');
       return;
     }
-
-    vocals.playerVolume = 1;
 
     var isComboBreak = false;
     switch (daRating)
