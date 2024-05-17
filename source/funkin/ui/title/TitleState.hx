@@ -126,10 +126,11 @@ class TitleState extends MusicBeatState
     bg.screenCenter();
     add(bg);
 
-    logoBl = new FlxSprite(-150, -100);
+    logoBl = new FlxSprite(0, -40);
     logoBl.frames = Paths.getSparrowAtlas('logoBumpin');
     logoBl.animation.addByPrefix('bump', 'logo bumpin', 24);
     logoBl.animation.play('bump');
+    logoBl.setGraphicSize(logoBl.width * 0.8, logoBl.height * 0.8);
     logoBl.shader = swagShader.shader;
     logoBl.updateHitbox();
 
