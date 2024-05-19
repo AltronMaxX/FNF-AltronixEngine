@@ -1,3 +1,4 @@
+
 # FNF-Altronix Engine
 
 FNF-Altronix Engine is a modification of Friday Night Funkin'. It provides some features that you (maybe) will never see in vanila game.
@@ -21,9 +22,9 @@ Please check out our [Contributor's guide](./CONTRIBUTORS.md) on how you can act
 
 Full credits can be found in-game, or wherever the credits.json file is.
 
-## Friday Night Funkin'
+## Friday Night Funkin' 
 
-Friday Night Funkin' is a rhythm game. Built using HaxeFlixel for Ludem Dare 47.
+Friday Night Funkin' is a rhythm game. Built using HaxeFlixel for Ludum Dare 47.
 
 This game was made with love to Newgrounds and it's community. Extra love to Tom Fulp.
 
