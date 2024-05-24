@@ -1,5 +1,6 @@
 package funkin.ui.options;
 
+import altronix.ui.options.UIMenu;
 import funkin.ui.debug.latency.LatencyState;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
@@ -41,12 +42,14 @@ class OptionsState extends MusicBeatState
     var options = addPage(Options, new OptionsMenu());
     var preferences = addPage(Preferences, new PreferencesMenu());
     var controls = addPage(Controls, new ControlsMenu());
+    var ui = addPage(UI, new UIMenu());
 
     if (options.hasMultipleOptions())
     {
       options.onExit.add(exitToMainMenu);
       controls.onExit.add(exitControls);
       preferences.onExit.add(switchPage.bind(Options));
+      ui.onExit.add(switchPage.bind(Options));
     }
     else
     {
@@ -194,6 +197,7 @@ class OptionsMenu extends Page
     createItem("INPUT OFFSETS", function() {
       FlxG.state.openSubState(new LatencyState());
     });
+    createItem("UI", function() switchPage(UI));
 
     #if newgrounds
     if (NGio.isLoggedIn) createItem("LOGOUT", selectLogout);
@@ -273,4 +277,5 @@ enum PageName
   Colors;
   Mods;
   Preferences;
+  UI;
 }

@@ -67,15 +67,6 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Auto Pause', 'Automatically pause the game when it loses focus', function(value:Bool):Void {
       Preferences.autoPause = value;
     }, Preferences.autoPause);
-    createPrefItemCheckbox('Colored Health Bar', 'Changes default health bar colours to character dominant color from health icon', function(value:Bool):Void {
-      Preferences.coloredHealthBar = value;
-    }, Preferences.coloredHealthBar);
-    createPrefItemCheckbox('Advanced Score Text', 'Changes funkin score text to altronix score text', function(value:Bool):Void {
-      Preferences.advancedScoreText = value;
-    }, Preferences.advancedScoreText);
-    createPrefItemCheckbox('Song Position Bar', 'Adds song position ber', function(value:Bool):Void {
-      Preferences.songPositionBar = value;
-    }, Preferences.songPositionBar);
   }
 
   function createPrefItemCheckbox(prefName:String, prefDesc:String, onChange:Bool->Void, defaultValue:Bool):Void
