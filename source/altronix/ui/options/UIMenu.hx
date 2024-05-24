@@ -1,13 +1,19 @@
 package altronix.ui.options;
 
-import funkin.ui.AtlasText.AtlasFont;
+import Type;
+import funkin.Paths;
+import funkin.PlayerSettings;
 import funkin.Preferences;
-import flixel.FlxSprite;
-import funkin.ui.options.PreferencesMenu;
+import funkin.audio.FunkinSound;
+import funkin.ui.AtlasText.AtlasFont;
+import funkin.ui.AtlasText;
 import funkin.ui.TextMenuList.TextMenuItem;
+import funkin.ui.options.PreferencesMenu;
 
 class UIMenu extends PreferencesMenu
 {
+  var curSelected:Int = 0;
+
   public function new()
   {
     super();
@@ -29,12 +35,89 @@ class UIMenu extends PreferencesMenu
 
   function createPrefItemSwitch<T:Any>(prefName:String, prefDesc:String, onChange:T->Void, defaultValue:T):Void
   {
-    var item:SwitchablePreferenceItem<T> = new SwitchablePreferenceItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, function() {
+    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, function() {
       // onChange(value);
-    });
+    }, defaultValue);
 
     items.add(item);
+
+    preferenceItems.add(item);
   }
+
+  override function update(elapsed:Float):Void
+  {
+    super.update(elapsed);
+
+    updateControls();
+
+    preferenceItems.forEach(function(daItem:FlxSprite) {
+      if (preferenceItems[curSelected] == daItem) daItem.x = 150;
+      else
+        daItem.x = 120;
+    });
+  }
+
+  inline function updateControls()
+  {
+    var controls = PlayerSettings.player1.controls;
+
+    if (controls.UI_UP_P || controls.UI_DOWN_P) {
+      FunkinSound.playOnce(Paths.sound('scrollMenu'));
+      navVertical(controls.UI_UP_P ? -1 : 1);
+    }
+
+    if (controls.UI_LEFT_P || controls.UI_RIGHT_P && (preferenceItems[curSelected] is SwitchableItem)){
+      FunkinSound.playOnce(Paths.sound('scrollMenu'));
+      var item = preferenceItems[curSelected];
+      var ind = item.curSelected + controls.UI_LEFT_P ? -1 : 1
+
+      if (ind > item.values.length) ind = 0;
+      if (ind < 0) ind = item.values.length - 1;
+      item.curSelected = ind;
+    }
+
+    if (controls.ACCEPT && preferenceItems[curSelected] is CheckboxPreferenceItem){
+
+    }
+
+
+
+    // ;
+    // selectItem(newIndex);
+
+    // Todo: bypass popup blocker on firefox
+    // if (controls.ACCEPT) accept();
+  }
+
+  function navVertical(ind:Int) {}
 }
 
-class SwitchablePreferenceItem<T:Any> extends TextMenuItem {}
+class SwitchableItem<T:Any> extends TextMenuItem
+{
+  public var value:T;
+  public var values:Array<T>;
+  public var curSelected(default, set):Int = 0;
+
+  private var valueType:ValueType;
+
+  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, ?callback:Void->Void, defaultValue:T)
+  {
+    super(x, y, name, font, callback);
+    value = defaultValue;
+
+    regenText();
+  }
+
+  function regenText():Void
+  {
+    var newText:String = '$name < $value >';
+    this.label = new AtlasText(0, 0, newText, font);
+  }
+
+  function set_curSelected(val:Int):Int
+  {
+    curSelected = val;
+    value = values[curSelected];
+    return val;
+  }
+}
