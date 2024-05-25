@@ -3,7 +3,7 @@
 - Weird macro error with a very tall call stack: Restart Visual Studio Code
   - NOTE: This is caused by Polymod somewhere, and seems to only occur when there is another compile error somewhere in the program. There is a bounty up for it.
 
-- `Get Thread Context Failed`: Turn off other expensive applications while building
+- `Get Thread Context Failed`: Turn off other expensive applications while building. Or try to download [this](https://github.com/Altronix-Team/neko/releases/tag/GetThreadContextFix) version of Neko VM and replace existing.
 
 - `Type not found: T1`: This is thrown by `json2object`, make sure the data type of `@:default` is correct.
   - NOTE: `flixel.util.typeLimit.OneOfTwo` isn't supported.
