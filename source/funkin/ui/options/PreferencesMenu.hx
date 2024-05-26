@@ -28,6 +28,7 @@ class PreferencesMenu extends Page
 
     add(items = new TextMenuList());
     add(preferenceItems = new FlxTypedSpriteGroup<FlxSprite>());
+    items.visible = false;
 
     createPrefItems();
 
@@ -73,26 +74,52 @@ class PreferencesMenu extends Page
   {
     var checkbox:CheckboxPreferenceItem = new CheckboxPreferenceItem(0, 120 * (items.length - 1 + 1), defaultValue);
 
-    items.createItem(120, (120 * items.length) + 30, prefName, AtlasFont.BOLD, function() {
+    var item = items.createItem(120, (120 * items.length) + 30, prefName, AtlasFont.BOLD, function() {
       var value = !checkbox.currentValue;
       onChange(value);
       checkbox.currentValue = value;
     });
 
-    preferenceItems.add(checkbox);
+    preferenceItems.add(new PreferenceItem(0, (120 * items.length) + 30, checkbox, item));
   }
 
-  override function update(elapsed:Float)
+  override function update(elapsed:Float):Void
   {
     super.update(elapsed);
 
-    // Indent the selected item.
+    // Indent the selected item.~~
     // TODO: Only do this on menu change?
     items.forEach(function(daItem:TextMenuItem) {
       if (items.selectedItem == daItem) daItem.x = 150;
       else
         daItem.x = 120;
     });
+  }
+}
+
+class PreferenceItem extends FlxSprite
+{
+  var checkbox:CheckboxPreferenceItem;
+  var text:FlxSprite;
+
+  public function new(x:Float, y:Float, checkbox:CheckboxPreferenceItem, text:FlxSprite)
+  {
+    super(x, y);
+    this.checkbox = checkbox;
+    this.text = text;
+  }
+
+  override function draw():Void
+  {
+    checkbox.draw();
+    text.draw();
+  }
+
+  override function update(elapsed:Float):Void
+  {
+    super.update(elapsed);
+    checkbox.update(elapsed);
+    text.update(elapsed);
   }
 }
 

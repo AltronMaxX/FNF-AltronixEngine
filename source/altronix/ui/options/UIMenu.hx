@@ -1,11 +1,11 @@
 package altronix.ui.options;
 
 import Type;
+import flixel.FlxSprite;
 import funkin.Paths;
 import funkin.PlayerSettings;
 import funkin.Preferences;
 import funkin.audio.FunkinSound;
-import funkin.ui.AtlasText.AtlasFont;
 import funkin.ui.AtlasText;
 import funkin.ui.TextMenuList.TextMenuItem;
 import funkin.ui.options.PreferencesMenu;
@@ -13,6 +13,7 @@ import funkin.ui.options.PreferencesMenu;
 class UIMenu extends PreferencesMenu
 {
   var curSelected:Int = 0;
+  var _items:Array<FlxSprite> = [];
 
   public function new()
   {
@@ -35,12 +36,12 @@ class UIMenu extends PreferencesMenu
 
   function createPrefItemSwitch<T:Any>(prefName:String, prefDesc:String, onChange:T->Void, defaultValue:T):Void
   {
-    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, function() {
-      // onChange(value);
-    }, defaultValue);
+    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, defaultValue);
+    item.callback = function() {
+      onChange(item.value);
+    };
 
     items.add(item);
-
     preferenceItems.add(item);
   }
 
@@ -50,46 +51,48 @@ class UIMenu extends PreferencesMenu
 
     updateControls();
 
-    preferenceItems.forEach(function(daItem:FlxSprite) {
-      if (preferenceItems[curSelected] == daItem) daItem.x = 150;
+    items.forEach(function(daItem:TextMenuItem) {
+      if (items.selectedItem == daItem) daItem.x = 150;
       else
         daItem.x = 120;
     });
   }
 
-  inline function updateControls()
+  inline function updateControls():Void
   {
     var controls = PlayerSettings.player1.controls;
 
-    if (controls.UI_UP_P || controls.UI_DOWN_P) {
+    if (controls.UI_UP_P || controls.UI_DOWN_P)
+    {
       FunkinSound.playOnce(Paths.sound('scrollMenu'));
       navVertical(controls.UI_UP_P ? -1 : 1);
     }
 
-    if (controls.UI_LEFT_P || controls.UI_RIGHT_P && (preferenceItems[curSelected] is SwitchableItem)){
+    if (controls.UI_LEFT_P || controls.UI_RIGHT_P && (preferenceItems.members[curSelected] is SwitchableItem))
+    {
       FunkinSound.playOnce(Paths.sound('scrollMenu'));
-      var item = preferenceItems[curSelected];
-      var ind = item.curSelected + controls.UI_LEFT_P ? -1 : 1
+      var item:SwitchableItem<Any> = cast preferenceItems.members[curSelected];
+      var ind = item.curSelected + (controls.UI_LEFT_P ? -1 : 1);
 
-      if (ind > item.values.length) ind = 0;
+      if (ind > item.values.length - 1) ind = 0;
       if (ind < 0) ind = item.values.length - 1;
       item.curSelected = ind;
     }
 
-    if (controls.ACCEPT && preferenceItems[curSelected] is CheckboxPreferenceItem){
-
+    if (controls.ACCEPT && preferenceItems.members[curSelected] is PreferenceItem)
+    {
+      items.accept();
     }
-
-
-
-    // ;
-    // selectItem(newIndex);
-
-    // Todo: bypass popup blocker on firefox
-    // if (controls.ACCEPT) accept();
   }
 
-  function navVertical(ind:Int) {}
+  function navVertical(ind:Int):Void
+  {
+    curSelected += ind;
+    if (curSelected > preferenceItems.members.length - 1) curSelected = 0;
+    if (curSelected < 0) curSelected = preferenceItems.members.length - 1;
+    items.selectItem(curSelected);
+    camFollow.y = items.selectedItem.y;
+  }
 }
 
 class SwitchableItem<T:Any> extends TextMenuItem
@@ -98,12 +101,14 @@ class SwitchableItem<T:Any> extends TextMenuItem
   public var values:Array<T>;
   public var curSelected(default, set):Int = 0;
 
-  private var valueType:ValueType;
+  var valueType:ValueType;
+  var font:AtlasFont;
 
-  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, ?callback:Void->Void, defaultValue:T)
+  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, defaultValue:T)
   {
-    super(x, y, name, font, callback);
+    super(x, y, name, font);
     value = defaultValue;
+    this.font = font;
 
     regenText();
   }
@@ -118,6 +123,7 @@ class SwitchableItem<T:Any> extends TextMenuItem
   {
     curSelected = val;
     value = values[curSelected];
+    regenText();
     return val;
   }
 }

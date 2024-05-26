@@ -1,19 +1,19 @@
 package funkin.ui.options;
 
 import altronix.ui.options.UIMenu;
-import funkin.ui.debug.latency.LatencyState;
 import flixel.FlxSprite;
 import flixel.FlxSubState;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.group.FlxGroup;
 import flixel.util.FlxSignal;
 import funkin.audio.FunkinSound;
-import funkin.ui.mainmenu.MainMenuState;
-import funkin.ui.MusicBeatState;
-import funkin.graphics.shaders.HSVShader;
-import funkin.util.WindowUtil;
 import funkin.audio.FunkinSound;
+import funkin.graphics.shaders.HSVShader;
 import funkin.input.Controls;
+import funkin.ui.MusicBeatState;
+import funkin.ui.debug.latency.LatencyState;
+import funkin.ui.mainmenu.MainMenuState;
+import funkin.util.WindowUtil;
 
 class OptionsState extends MusicBeatState
 {
@@ -41,8 +41,8 @@ class OptionsState extends MusicBeatState
 
     var options = addPage(Options, new OptionsMenu());
     var preferences = addPage(Preferences, new PreferencesMenu());
-    var controls = addPage(Controls, new ControlsMenu());
     var ui = addPage(UI, new UIMenu());
+    var controls = addPage(Controls, new ControlsMenu());
 
     if (options.hasMultipleOptions())
     {
@@ -193,11 +193,11 @@ class OptionsMenu extends Page
 
     add(items = new TextMenuList());
     createItem("PREFERENCES", function() switchPage(Preferences));
+    createItem("UI", function() switchPage(UI));
     createItem("CONTROLS", function() switchPage(Controls));
     createItem("INPUT OFFSETS", function() {
       FlxG.state.openSubState(new LatencyState());
     });
-    createItem("UI", function() switchPage(UI));
 
     #if newgrounds
     if (NGio.isLoggedIn) createItem("LOGOUT", selectLogout);
