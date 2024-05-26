@@ -896,6 +896,7 @@ class PlayState extends MusicBeatSubState
 
       health = Constants.HEALTH_STARTING;
       songScore = 0;
+      accuracy = 0;
       Highscore.tallies.combo = 0;
       Countdown.performCountdown(currentStageId.startsWith('school'));
 

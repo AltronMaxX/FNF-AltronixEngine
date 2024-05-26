@@ -120,6 +120,7 @@ class ScoreText extends FlxTypedGroup<FlxText>
               {
                 onComplete: function(twn:FlxTween) {
                   missColorTween = null;
+                  updateColor(textColor);
                 }
               });
           }
@@ -153,17 +154,9 @@ class ScoreText extends FlxTypedGroup<FlxText>
 
     var wifeConditions:Array<Bool> = [
       accuracy >= 99.9935, // AAAAA
-      accuracy >= 99.980, // AAAA:
-      accuracy >= 99.970, // AAAA.
       accuracy >= 99.955, // AAAA
-      accuracy >= 99.90, // AAA:
-      accuracy >= 99.80, // AAA.
       accuracy >= 99.70, // AAA
-      accuracy >= 99, // AA:
-      accuracy >= 96.50, // AA.
       accuracy >= 93, // AA
-      accuracy >= 90, // A:
-      accuracy >= 85, // A.
       accuracy >= 80, // A
       accuracy >= 70, // B
       accuracy >= 60, // C
@@ -178,28 +171,12 @@ class ScoreText extends FlxTypedGroup<FlxText>
         {
           case 0:
             rating = "AAAAA";
-          case 1:
-            rating = "AAAA:";
-          case 2:
-            rating = "AAAA.";
           case 3:
             rating = "AAAA";
-          case 4:
-            rating = "AAA:";
-          case 5:
-            rating = "AAA.";
           case 6:
             rating = "AAA";
-          case 7:
-            rating = "AA:";
-          case 8:
-            rating = "AA.";
           case 9:
             rating = "AA";
-          case 10:
-            rating = "A:";
-          case 11:
-            rating = "A.";
           case 12:
             rating = "A";
           case 13:
@@ -316,19 +293,24 @@ class ScoreText extends FlxTypedGroup<FlxText>
     accuracyText.x = missesText.x + missesText.width;
   }
 
-  function set_textColor(value:FlxColor):FlxColor
+  function updateColor(value:FlxColor):Void
   {
-    textColor = value;
     forEach(function(text:FlxText) {
       if (text.text.startsWith('Misses') && missColorTween != null)
       {
-        if (!missColorTween.active) text.color = value;
+        text.color = value;
       }
       else
       {
         text.color = value;
       }
     });
+  }
+
+  function set_textColor(value:FlxColor):FlxColor
+  {
+    textColor = value;
+    updateColor(value);
     return value;
   }
 }

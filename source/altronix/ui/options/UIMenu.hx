@@ -13,7 +13,6 @@ import funkin.ui.options.PreferencesMenu;
 class UIMenu extends PreferencesMenu
 {
   var curSelected:Int = 0;
-  var _items:Array<FlxSprite> = [];
 
   public function new()
   {
@@ -80,9 +79,7 @@ class UIMenu extends PreferencesMenu
     }
 
     if (controls.ACCEPT && preferenceItems.members[curSelected] is PreferenceItem)
-    {
       items.accept();
-    }
   }
 
   function navVertical(ind:Int):Void
