@@ -243,8 +243,15 @@ class InitState extends FlxState
     }
     else
     {
-      FlxG.sound.cache(Paths.music('freakyMenu/freakyMenu'));
-      FlxG.switchState(() -> new TitleState());
+      if (altronix.updater.UpdateChecker.needUpdate())
+      {
+        FlxG.switchState(() -> new altronix.ui.UpdateState());
+      }
+      else
+      {
+        FlxG.sound.cache(Paths.music('freakyMenu/freakyMenu'));
+        FlxG.switchState(() -> new TitleState());
+      }
     }
   }
 
