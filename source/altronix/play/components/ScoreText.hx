@@ -171,19 +171,19 @@ class ScoreText extends FlxTypedGroup<FlxText>
         {
           case 0:
             rating = "AAAAA";
-          case 3:
+          case 1:
             rating = "AAAA";
-          case 6:
+          case 2:
             rating = "AAA";
-          case 9:
+          case 3:
             rating = "AA";
-          case 12:
+          case 4:
             rating = "A";
-          case 13:
+          case 5:
             rating = "B";
-          case 14:
+          case 6:
             rating = "C";
-          case 15:
+          case 7:
             rating = "D";
         }
         break;

@@ -39,8 +39,6 @@ jobs:
           path: |
             export/release/windows/haxe/
             export/release/windows/obj/
-            export/debug/windows/haxe/
-            export/debug/windows/obj/
 
       # Runs a set of commands using the runners shell
       - name: Setup everything and build release version
@@ -56,15 +54,6 @@ jobs:
         run: |
           7z a -tzip "engine.zip" "./export/release/windows/bin/*"
 
-      - name: Build debug version
-        run: |
-          haxelib run lime build windows -debug
-        shell: cmd
-
-      - name: Make debug zip
-        run: |
-          7z a -tzip "engine-debug.zip" "./export/debug/windows/bin/*"
-
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
@@ -74,7 +63,6 @@ jobs:
           target_commitish: "develop"
           files: |
             engine.zip
-            engine-debug.zip
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -104,6 +92,4 @@ jobs:
           path: |
             export/release/windows/haxe/
             export/release/windows/obj/
-            export/debug/windows/haxe/
-            export/debug/windows/obj/
           key: cache-build-windows
