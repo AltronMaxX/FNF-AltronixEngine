@@ -25,20 +25,14 @@ class Updater
     FileSystem.createDirectory(updateTempPath);
 
     unzipGame();
-    trace("Unzipped!");
     FileSystem.deleteFile(zipPath);
     replaceFiles();
-    trace("Replaced!");
 
     FileSystem.rename(curGameExePath, '${Path.withoutExtension(curGameExePath)}.bak');
     FileSystem.rename(newGameExePath, curGameExePath);
-    trace("Renamed!");
 
-    trace("Starting new version!");
     new Process("FNF-AE.exe");
-    trace("Started new version!");
     FileSystem.deleteDirectory(updateTempPath);
-    trace("Removed temp dir");
     Sys.exit(0);
     #end
   }

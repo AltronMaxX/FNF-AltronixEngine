@@ -9,7 +9,7 @@ class UpdateChecker
 {
   public static function needUpdate():Bool
   {
-    #if (!debug && sys)
+    #if (!debug && sys && !linux)
     var latestCommit = getLatestCommitHash();
     if (latestCommit != Constants.GIT_HASH && latestCommit != "") return true;
     #end
