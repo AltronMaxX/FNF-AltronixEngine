@@ -1,5 +1,6 @@
 package funkin.ui.options;
 
+import funkin.audio.FunkinSound;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
@@ -16,10 +17,12 @@ class PreferencesMenu extends Page
 
   var menuCamera:FlxCamera;
   var camFollow:FlxObject;
+  var curSelected:Int = 0;
 
   public function new()
   {
     super();
+    items.enabled = false;
 
     menuCamera = new FunkinCamera('prefMenu');
     FlxG.cameras.add(menuCamera, false);
@@ -70,6 +73,17 @@ class PreferencesMenu extends Page
     }, Preferences.autoPause);
   }
 
+  function createPrefItemSwitch<T:Any>(prefName:String, prefDesc:String, onChange:T->Void, defaultValue:T):Void
+  {
+    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, defaultValue);
+    item.callback = function() {
+      onChange(item.value);
+    };
+
+    items.add(item);
+    preferenceItems.add(item);
+  }
+
   function createPrefItemCheckbox(prefName:String, prefDesc:String, onChange:Bool->Void, defaultValue:Bool):Void
   {
     var checkbox:CheckboxPreferenceItem = new CheckboxPreferenceItem(0, 120 * (items.length - 1 + 1), defaultValue);
@@ -87,6 +101,8 @@ class PreferencesMenu extends Page
   {
     super.update(elapsed);
 
+    updateControls();
+
     // Indent the selected item.~~
     // TODO: Only do this on menu change?
     items.forEach(function(daItem:TextMenuItem) {
@@ -94,6 +110,39 @@ class PreferencesMenu extends Page
       else
         daItem.x = 120;
     });
+  }
+
+  inline function updateControls():Void
+  {
+    var controls = PlayerSettings.player1.controls;
+
+    if (controls.UI_UP_P || controls.UI_DOWN_P)
+    {
+      FunkinSound.playOnce(Paths.sound('scrollMenu'));
+      navVertical(controls.UI_UP_P ? -1 : 1);
+    }
+
+    if (controls.UI_LEFT_P || controls.UI_RIGHT_P && (preferenceItems.members[curSelected] is SwitchableItem))
+    {
+      FunkinSound.playOnce(Paths.sound('scrollMenu'));
+      var item:SwitchableItem<Any> = cast preferenceItems.members[curSelected];
+      var ind = item.curSelected + (controls.UI_LEFT_P ? -1 : 1);
+
+      if (ind > item.values.length - 1) ind = 0;
+      if (ind < 0) ind = item.values.length - 1;
+      item.curSelected = ind;
+    }
+
+    if (controls.ACCEPT && preferenceItems.members[curSelected] is PreferenceItem) items.accept();
+  }
+
+  function navVertical(ind:Int):Void
+  {
+    curSelected += ind;
+    if (curSelected > preferenceItems.members.length - 1) curSelected = 0;
+    if (curSelected < 0) curSelected = preferenceItems.members.length - 1;
+    items.selectItem(curSelected);
+    camFollow.y = items.selectedItem.y;
   }
 }
 
@@ -166,5 +215,38 @@ class CheckboxPreferenceItem extends FlxSprite
     }
 
     return currentValue = value;
+  }
+}
+
+class SwitchableItem<T:Any> extends TextMenuItem
+{
+  public var value:T;
+  public var values:Array<T>;
+  public var curSelected(default, set):Int = 0;
+
+  var valueType:ValueType;
+  var font:AtlasFont;
+
+  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, defaultValue:T)
+  {
+    super(x, y, name, font);
+    value = defaultValue;
+    this.font = font;
+
+    regenText();
+  }
+
+  function regenText():Void
+  {
+    var newText:String = '$name < $value >';
+    this.label = new AtlasText(0, 0, newText, font);
+  }
+
+  function set_curSelected(val:Int):Int
+  {
+    curSelected = val;
+    value = values[curSelected];
+    regenText();
+    return val;
   }
 }
