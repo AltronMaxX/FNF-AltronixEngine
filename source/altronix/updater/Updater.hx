@@ -12,11 +12,15 @@ import sys.FileSystem;
 
 class Updater
 {
+  static final gameExtension:String = #if windows '.exe' #else '' #end;
   static final zipPath:String = Sys.getCwd() + '/engine.zip';
   static final updateTempPath:String = Sys.getCwd() + '/updateTemp/';
-  static final curGameExePath:String = Sys.getCwd() + '/FNF-AE.exe';
-  static final newGameExePath:String = Sys.getCwd() + '/updateTemp/FNF-AE.exe';
+  static final curGameExePath:String = Sys.getCwd() + '/FNF-AE' + gameExtension;
+  static final newGameExePath:String = Sys.getCwd() + '/updateTemp/FNF-AE' + gameExtension;
 
+  /**
+   * Updates game from downloaded archive.
+   */
   public static function updateGame():Void
   {
     #if sys
@@ -31,7 +35,7 @@ class Updater
     FileSystem.rename(curGameExePath, '${Path.withoutExtension(curGameExePath)}.bak');
     FileSystem.rename(newGameExePath, curGameExePath);
 
-    new Process("FNF-AE.exe");
+    new Process("FNF-AE" + gameExtension);
     FileSystem.deleteDirectory(updateTempPath);
     Sys.exit(0);
     #end
@@ -44,9 +48,11 @@ class Updater
     {
       for (filePath in FileSystem.readDirectory(updateTempPath))
       {
-        if (filePath == "FNF-AE.exe" || filePath.endsWith(".dll") || filePath.endsWith(".ndll")) // TODO: Do something with dll, ndll
+        if (filePath == "FNF-AE" + gameExtension
+          || filePath.endsWith(".dll")
+          || filePath.endsWith(".ndll")) // TODO: Do something with dll, ndll
         {
-          if (filePath == "FNF-AE.exe")
+          if (filePath == "FNF-AE" + gameExtension)
           {
             continue;
           }

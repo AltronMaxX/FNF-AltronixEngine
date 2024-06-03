@@ -7,9 +7,13 @@ import haxe.Json;
 
 class UpdateChecker
 {
+  /**
+   * Checks game commit and latest release commit and returns true or false is we can update game.
+   * @return Bool
+   */
   public static function needUpdate():Bool
   {
-    #if (!debug && sys && !linux)
+    #if (!debug && sys && !linux) // TODO: Autocompile for linux
     var latestCommit = getLatestCommitHash();
     if (latestCommit != Constants.GIT_HASH && latestCommit != "") return true;
     #end
