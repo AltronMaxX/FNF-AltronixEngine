@@ -59,6 +59,8 @@ class InitState extends FlxState
     // Flixel has already loaded the save data, so we can just use it.
     Preferences.init();
 
+    altronix.audio.MenuMusicHelper.initMusicList();
+
     // Load controls from save data.
     PlayerSettings.init();
 
@@ -249,7 +251,7 @@ class InitState extends FlxState
       }
       else
       {
-        FlxG.sound.cache(Paths.music('freakyMenu/freakyMenu'));
+        altronix.audio.MenuMusicHelper.cacheMenuMusic();
         FlxG.switchState(() -> new TitleState());
       }
     }

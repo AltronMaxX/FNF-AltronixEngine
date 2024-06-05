@@ -90,6 +90,7 @@ class Save
           coloredHealthBar: false,
           advancedScoreText: true,
           songPositionBar: false,
+          menuMusic: 'freakyMenu',
 
           controls:
             {
@@ -902,6 +903,12 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var songPositionBar:Bool;
+
+  /**
+   * Defines which menu music should be played.
+   * @default `freakyMenu`
+   */
+  var menuMusic:String;
 
   var controls:
     {

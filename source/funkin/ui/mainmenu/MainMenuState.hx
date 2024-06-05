@@ -161,11 +161,7 @@ class MainMenuState extends MusicBeatState
 
   function playMenuMusic():Void
   {
-    FunkinSound.playMusic('freakyMenu',
-      {
-        overrideExisting: true,
-        restartTrack: false
-      });
+    altronix.audio.MenuMusicHelper.playMenuMusic();
   }
 
   function resetCamStuff():Void

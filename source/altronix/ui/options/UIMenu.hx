@@ -1,6 +1,5 @@
 package altronix.ui.options;
 
-import Type;
 import flixel.FlxSprite;
 import funkin.Paths;
 import funkin.PlayerSettings;

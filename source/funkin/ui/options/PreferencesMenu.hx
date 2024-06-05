@@ -22,7 +22,6 @@ class PreferencesMenu extends Page
   public function new()
   {
     super();
-    items.enabled = false;
 
     menuCamera = new FunkinCamera('prefMenu');
     FlxG.cameras.add(menuCamera, false);
@@ -32,6 +31,7 @@ class PreferencesMenu extends Page
     add(items = new TextMenuList());
     add(preferenceItems = new FlxTypedSpriteGroup<FlxSprite>());
     items.visible = false;
+    items.enabled = false;
 
     createPrefItems();
 
@@ -71,11 +71,16 @@ class PreferencesMenu extends Page
     createPrefItemCheckbox('Auto Pause', 'Automatically pause the game when it loses focus', function(value:Bool):Void {
       Preferences.autoPause = value;
     }, Preferences.autoPause);
+    createPrefItemSwitch('Menu music', 'Defines which menu music should be played.', function(value:String):Void {
+      openfl.Assets.cache.clear(Preferences.menuMusic);
+      Preferences.menuMusic = value;
+      altronix.audio.MenuMusicHelper.cacheMenuMusic();
+    }, Preferences.menuMusic, altronix.audio.MenuMusicHelper.avaiableMusic);
   }
 
-  function createPrefItemSwitch<T:Any>(prefName:String, prefDesc:String, onChange:T->Void, defaultValue:T):Void
+  function createPrefItemSwitch<T:Any>(prefName:String, prefDesc:String, onChange:T->Void, defaultValue:T, defaultValues:Array<T>):Void
   {
-    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, defaultValue);
+    var item:SwitchableItem<T> = new SwitchableItem<T>(0, 120 * (items.length - 1 + 1), prefName, AtlasFont.BOLD, defaultValue, defaultValues);
     item.callback = function() {
       onChange(item.value);
     };
@@ -190,7 +195,7 @@ class CheckboxPreferenceItem extends FlxSprite
     this.currentValue = defaultValue;
   }
 
-  override function update(elapsed:Float)
+  override function update(elapsed:Float):Void
   {
     super.update(elapsed);
 
@@ -224,13 +229,13 @@ class SwitchableItem<T:Any> extends TextMenuItem
   public var values:Array<T>;
   public var curSelected(default, set):Int = 0;
 
-  var valueType:ValueType;
   var font:AtlasFont;
 
-  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, defaultValue:T)
+  public function new(x = 0.0, y = 0.0, name:String, font:AtlasFont = BOLD, defaultValue:T, defaultValues:Array<T>)
   {
     super(x, y, name, font);
     value = defaultValue;
+    values = defaultValues;
     this.font = font;
 
     regenText();
@@ -239,7 +244,7 @@ class SwitchableItem<T:Any> extends TextMenuItem
   function regenText():Void
   {
     var newText:String = '$name < $value >';
-    this.label = new AtlasText(0, 0, newText, font);
+    this.label.text = newText;
   }
 
   function set_curSelected(val:Int):Int

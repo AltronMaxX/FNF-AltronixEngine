@@ -180,11 +180,7 @@ class FreeplayState extends MusicBeatSubState
     isDebug = true;
     #end
 
-    FunkinSound.playMusic('freakyMenu',
-      {
-        overrideExisting: true,
-        restartTrack: false
-      });
+    altronix.audio.MenuMusicHelper.playMenuMusic();
 
     // Add a null entry that represents the RANDOM option
     songs.push(null);
@@ -990,11 +986,7 @@ class FreeplayState extends MusicBeatSubState
         FlxTransitionableState.skipNextTransOut = true;
         if (Type.getClass(_parentState) == MainMenuState)
         {
-          FunkinSound.playMusic('freakyMenu',
-            {
-              overrideExisting: true,
-              restartTrack: false
-            });
+          altronix.audio.MenuMusicHelper.playMenuMusic();
           close();
         }
         else
@@ -1277,7 +1269,7 @@ class FreeplayState extends MusicBeatSubState
       else
       {
         // TODO: Stream the instrumental of the selected song?
-        var didReplace:Bool = FunkinSound.playMusic('freakyMenu',
+        var didReplace:Bool = altronix.audio.MenuMusicHelper.playMenuMusic(
           {
             startingVolume: 0.0,
             overrideExisting: true,
@@ -1285,7 +1277,7 @@ class FreeplayState extends MusicBeatSubState
           });
         if (didReplace)
         {
-          FunkinSound.playMusic('freakyMenu',
+          altronix.audio.MenuMusicHelper.playMenuMusic(
             {
               startingVolume: 0.0,
               overrideExisting: true,

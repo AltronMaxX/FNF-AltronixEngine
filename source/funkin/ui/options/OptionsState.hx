@@ -114,6 +114,7 @@ class OptionsState extends MusicBeatState
   function exitToMainMenu()
   {
     currentPage.enabled = false;
+    altronix.audio.MenuMusicHelper.playMenuMusic();
     // TODO: Animate this transition?
     FlxG.switchState(() -> new MainMenuState());
   }

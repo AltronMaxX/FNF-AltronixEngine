@@ -67,7 +67,7 @@ class UpdateState extends MusicBeatState
     }
     if (FlxG.keys.justPressed.ESCAPE && downloadStatus == NOT_STARTED)
     {
-      FlxG.sound.cache(Paths.music('freakyMenu/freakyMenu'));
+      altronix.audio.MenuMusicHelper.cacheMenuMusic();
       FlxG.switchState(() -> new TitleState());
     }
 

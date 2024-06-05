@@ -186,6 +186,25 @@ class Preferences
   }
 
   /**
+   * Defines which menu music should be played.
+   * @default `freakyMenu`
+   */
+  public static var menuMusic(get, set):String;
+
+  static function get_menuMusic():String
+  {
+    return Save?.instance?.options?.menuMusic ?? 'freakyMenu';
+  }
+
+  static function set_menuMusic(value:String):String
+  {
+    var save:Save = Save.instance;
+    save.options.menuMusic = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * Loads the user's preferences from the save data and apply them.
    */
   public static function init():Void

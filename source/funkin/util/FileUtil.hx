@@ -349,6 +349,21 @@ class FileUtil
     #end
   }
 
+  /**
+   * Read dir contents from a given dir.
+   * @param path The path to directory.
+   * @return The directory contents.
+   */
+  public static function readDirContent(path:String):Array<String>
+  {
+    #if sys
+    if (!sys.FileSystem.exists(path)) return null;
+    return sys.FileSystem.readDirectory(path);
+    #else
+    return null;
+    #end
+  }
+
   public static function doesFileExist(path:String):Bool
   {
     #if sys
