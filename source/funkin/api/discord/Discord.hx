@@ -3,6 +3,7 @@ package funkin.api.discord;
 import Sys.sleep;
 #if discord_rpc
 import discord_rpc.DiscordRpc;
+import discord_rpc.DiscordRpc.DiscordUser;
 #end
 
 class DiscordClient
@@ -24,7 +25,6 @@ class DiscordClient
     {
       DiscordRpc.process();
       sleep(2);
-      // trace("Discord Client Update");
     }
 
     DiscordRpc.shutdown();
@@ -35,7 +35,7 @@ class DiscordClient
     DiscordRpc.shutdown();
   }
 
-  static function onReady()
+  static function onReady(request:Any)
   {
     DiscordRpc.presence(
       {
