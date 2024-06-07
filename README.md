@@ -39,7 +39,7 @@ This game was made with love to Newgrounds and its community. Extra love to Tom 
 
 ### Programming
 - [ninjamuffin99](https://twitter.com/ninja_muffin99) - Lead Programmer
-- [MasterEric](https://twitter.com/EliteMasterEric) - Programmer
+- [EliteMasterEric](https://twitter.com/EliteMasterEric) - Programmer
 - [MtH](https://twitter.com/emmnyaa) - Charting and Additional Programming
 - [GeoKureli](https://twitter.com/Geokureli/) - Additional Programming
 - Our contributors on GitHub
