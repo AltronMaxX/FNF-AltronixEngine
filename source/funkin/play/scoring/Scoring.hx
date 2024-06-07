@@ -414,6 +414,25 @@ class Scoring
     }
   }
 
+  static function noteModifierWEEK7(msTiming:Float):Float
+  {
+    var absTiming:Float = Math.abs(msTiming);
+
+    return switch (absTiming)
+    {
+      case(_ < WEEK7_HIT_WINDOW * WEEK7_SICK_THRESHOLD) => true:
+        LEGACY_SICK_SCORE / 350;
+      case(_ < WEEK7_HIT_WINDOW * WEEK7_GOOD_THRESHOLD) => true:
+        LEGACY_GOOD_SCORE / 350;
+      case(_ < WEEK7_HIT_WINDOW * WEEK7_BAD_THRESHOLD) => true:
+        LEGACY_BAD_SCORE / 350;
+      case(_ < WEEK7_HIT_WINDOW) => true:
+        LEGACY_SHIT_SCORE / 350;
+      default:
+        0;
+    }
+  }
+
   public static function calculateRank(scoreData:Null<SaveScoreData>):Null<ScoringRank>
   {
     if (scoreData?.tallies.totalNotes == 0 || scoreData == null) return null;
@@ -710,25 +729,6 @@ enum abstract ScoringRank(String)
         return 'resultScreen/rankText/rankTextLOSS';
       default:
         return 'resultScreen/rankText/rankTextGOOD';
-    }
-  }
-
-  static function noteModifierWEEK7(msTiming:Float):Float
-  {
-    var absTiming:Float = Math.abs(msTiming);
-
-    return switch (absTiming)
-    {
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_SICK_THRESHOLD) => true:
-        LEGACY_SICK_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_GOOD_THRESHOLD) => true:
-        LEGACY_GOOD_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_BAD_THRESHOLD) => true:
-        LEGACY_BAD_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW) => true:
-        LEGACY_SHIT_SCORE / 350;
-      default:
-        0;
     }
   }
 }
