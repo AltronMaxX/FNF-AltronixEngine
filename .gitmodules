@@ -4,3 +4,6 @@
 [submodule "example_mods/funkin"]
 	path = example_mods/funkin
 	url = https://github.com/Altronix-Team/altronix.funkin_game.git
+[submodule "assets"]
+	path = assets
+	url = https://github.com/Altronix-Team/altronix.funkin_assets.git
