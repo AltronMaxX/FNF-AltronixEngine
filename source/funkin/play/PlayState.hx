@@ -166,6 +166,12 @@ class PlayState extends MusicBeatSubState
   public var currentVariation:String = Constants.DEFAULT_VARIATION;
 
   /**
+   * The currently selected instrumental ID.
+   * @default `''`
+   */
+  public var currentInstrumental:String = '';
+
+  /**
    * The currently active Stage. This is the object containing all the props.
    */
   public var currentStage:Stage = null;
@@ -615,6 +621,7 @@ class PlayState extends MusicBeatSubState
     currentSong = params.targetSong;
     if (params.targetDifficulty != null) currentDifficulty = params.targetDifficulty;
     if (params.targetVariation != null) currentVariation = params.targetVariation;
+    if (params.targetInstrumental != null) currentInstrumental = params.targetInstrumental;
     isPracticeMode = params.practiceMode ?? false;
     isBotPlayMode = params.botPlayMode ?? false;
     isMinimalMode = params.minimalMode ?? false;
@@ -1224,6 +1231,9 @@ class PlayState extends MusicBeatSubState
         cameraTweensPausedBySubState.add(cameraZoomTween);
       }
 
+      // Pause camera follow
+      FlxG.camera.followLerp = 0;
+
       for (tween in scrollSpeedTweens)
       {
         if (tween != null && tween.active)
@@ -1267,6 +1277,9 @@ class PlayState extends MusicBeatSubState
         camTween.active = true;
       }
       cameraTweensPausedBySubState.clear();
+
+      // Resume camera follow
+      FlxG.camera.followLerp = Constants.DEFAULT_CAMERA_FOLLOW_RATE;
 
       if (currentConversation != null)
       {
@@ -1991,7 +2004,7 @@ class PlayState extends MusicBeatSubState
 
     if (!overrideMusic && !isGamePaused && currentChart != null)
     {
-      currentChart.playInst(1.0, false);
+      currentChart.playInst(1.0, currentInstrumental, false);
     }
 
     if (FlxG.sound.music == null)
@@ -2294,11 +2307,20 @@ class PlayState extends MusicBeatSubState
       if (holdNote == null || !holdNote.alive) continue;
 
       // While the hold note is being hit, and there is length on the hold note...
-      if (!isBotPlayMode && holdNote.hitNote && !holdNote.missedNote && holdNote.sustainLength > 0)
+      if (holdNote.hitNote && !holdNote.missedNote && holdNote.sustainLength > 0)
       {
         // Grant the player health.
-        health += Constants.HEALTH_HOLD_BONUS_PER_SECOND * elapsed;
-        songScore += Std.int(Constants.SCORE_HOLD_BONUS_PER_SECOND * elapsed);
+        if (!isBotPlayMode)
+        {
+          health += Constants.HEALTH_HOLD_BONUS_PER_SECOND * elapsed;
+          songScore += Std.int(Constants.SCORE_HOLD_BONUS_PER_SECOND * elapsed);
+        }
+
+        // Make sure the player keeps singing while the note is held by the bot.
+        if (isBotPlayMode && currentStage != null && currentStage.getBoyfriend() != null && currentStage.getBoyfriend().isSinging())
+        {
+          currentStage.getBoyfriend().holdTimer = 0;
+        }
       }
 
       if (holdNote.missedNote && !holdNote.handledMiss)
@@ -2840,8 +2862,13 @@ class PlayState extends MusicBeatSubState
 
     deathCounter = 0;
 
+    // TODO: This line of code makes me sad, but you can't really fix it without a breaking migration.
+    // `easy`, `erect`, `normal-pico`, etc.
+    var suffixedDifficulty = (currentVariation != Constants.DEFAULT_VARIATION
+      && currentVariation != 'erect') ? '$currentDifficulty-${currentVariation}' : currentDifficulty;
+
     var isNewHighscore = false;
-    var prevScoreData:Null<SaveScoreData> = Save.instance.getSongScore(currentSong.id, currentDifficulty);
+    var prevScoreData:Null<SaveScoreData> = Save.instance.getSongScore(currentSong.id, suffixedDifficulty);
 
     if (currentSong != null && currentSong.validScore)
     {
@@ -2866,13 +2893,21 @@ class PlayState extends MusicBeatSubState
       // adds current song data into the tallies for the level (story levels)
       Highscore.talliesLevel = Highscore.combineTallies(Highscore.tallies, Highscore.talliesLevel);
 
-      if (!isPracticeMode && !isBotPlayMode && Save.instance.isSongHighScore(currentSong.id, currentDifficulty, data))
+      if (!isPracticeMode && !isBotPlayMode)
       {
-        Save.instance.setSongScore(currentSong.id, currentDifficulty, data);
-        #if newgrounds
-        NGio.postScore(score, currentSong.id);
-        #end
-        isNewHighscore = true;
+        isNewHighscore = Save.instance.isSongHighScore(currentSong.id, suffixedDifficulty, data);
+
+        // If no high score is present, save both score and rank.
+        // If score or rank are better, save the highest one.
+        // If neither are higher, nothing will change.
+        Save.instance.applySongRank(currentSong.id, suffixedDifficulty, data);
+
+        if (isNewHighscore)
+        {
+          #if newgrounds
+          NGio.postScore(score, currentSong.id);
+          #end
+        }
       }
     }
 
@@ -3107,7 +3142,7 @@ class PlayState extends MusicBeatSubState
     FlxG.camera.targetOffset.x += 20;
 
     // Replace zoom animation with a fade out for now.
-    camGame.fade(FlxColor.BLACK, 0.6);
+    FlxG.camera.fade(FlxColor.BLACK, 0.6);
 
     FlxTween.tween(camHUD, {alpha: 0}, 0.6,
       {
@@ -3202,7 +3237,7 @@ class PlayState extends MusicBeatSubState
       cancelAllCameraTweens();
     }
 
-    FlxG.camera.follow(cameraFollowPoint, LOCKON, 0.04);
+    FlxG.camera.follow(cameraFollowPoint, LOCKON, Constants.DEFAULT_CAMERA_FOLLOW_RATE);
     FlxG.camera.targetOffset.set();
 
     if (resetZoom)
