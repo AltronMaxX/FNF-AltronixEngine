@@ -12,11 +12,8 @@ import funkin.ui.title.TitleState;
 
 class UpdateState extends MusicBeatState
 {
-  public static var downloadPercent:Float = 0.0;
   public static var downloadStatus:DownloadingStatus = NOT_STARTED;
 
-  var downloadBar:FlxBar;
-  var downloadText:AtlasText;
   var awailableTexts:FlxGroup;
 
   final textArray = ["New engine update!", "Press ENTER to download", "ESC to continue"];
@@ -50,9 +47,6 @@ class UpdateState extends MusicBeatState
 
     if (FlxG.keys.justPressed.ENTER && downloadStatus == NOT_STARTED)
     {
-      awailableTexts.visible = false;
-      downloadText.visible = true;
-      downloadBar.visible = true;
       downloadStatus = DOWNLOADING;
       new Process('updater/AE-Updater' + #if windows '.exe' #else '' #end);
       Sys.exit(0);
