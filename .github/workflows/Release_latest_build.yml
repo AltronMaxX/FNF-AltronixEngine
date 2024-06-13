@@ -41,11 +41,23 @@ jobs:
             export/release/windows/obj/
 
       # Runs a set of commands using the runners shell
-      - name: Setup everything and build release version
+      - name: Setup everything
         run: |
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
+        shell: cmd
+
+      - name: Build updater
+        run: |
+          cd updater
+          haxelib run hmm install --quiet
+          haxelib run lime build windows
+          cd ..
+        shell: cmd
+
+      - name: Build engine
+        run: |
           haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd

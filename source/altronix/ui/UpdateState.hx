@@ -1,5 +1,6 @@
 package altronix.ui;
 
+import sys.io.Process;
 import flixel.FlxSprite;
 import flixel.group.FlxGroup;
 import flixel.ui.FlxBar;
@@ -41,16 +42,6 @@ class UpdateState extends MusicBeatState
       money.y += (i * 60) + 200;
       awailableTexts.add(money);
     }
-
-    downloadText = new AtlasText(0, 0, "Downloading...", AtlasFont.BOLD);
-    downloadText.screenCenter(XY);
-    downloadText.visible = false;
-    add(downloadText);
-
-    downloadBar = new FlxBar(0, FlxG.height - 40, LEFT_TO_RIGHT, FlxG.width, 40, "downloadPercent", 0, 1);
-    downloadBar.createFilledBar(FlxColor.BLACK, FlxColor.LIME);
-    downloadBar.visible = false;
-    add(downloadBar);
   }
 
   override function update(elapsed:Float):Void
@@ -63,26 +54,13 @@ class UpdateState extends MusicBeatState
       downloadText.visible = true;
       downloadBar.visible = true;
       downloadStatus = DOWNLOADING;
-      sys.thread.Thread.create(() -> altronix.updater.Downloader.downloadLatestZip());
+      new Process('updater/AE-Updater' + #if windows '.exe' #else '' #end);
+      Sys.exit(0);
     }
     if (FlxG.keys.justPressed.ESCAPE && downloadStatus == NOT_STARTED)
     {
       altronix.audio.MenuMusicHelper.cacheMenuMusic();
       FlxG.switchState(() -> new TitleState());
-    }
-
-    if (downloadStatus == DOWNLOADING)
-    {
-      downloadBar.value = downloadPercent;
-    }
-
-    if (downloadStatus == DOWNLOADED)
-    {
-      downloadBar.visible = false;
-      downloadText.text = "Updating...";
-      downloadText.screenCenter(XY);
-      downloadStatus = UPDATING;
-      sys.thread.Thread.create(() -> altronix.updater.Updater.updateGame());
     }
   }
 }

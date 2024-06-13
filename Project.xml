@@ -56,6 +56,8 @@ xsi:schemaLocation="http://lime.openfl.org/project/1.0.4 http://lime.openfl.org/
 	<assets path="assets/tutorial" library="tutorial" exclude="*.fla|*.ogg|*.wav" if="web" />
 	<assets path="assets/tutorial" library="tutorial" exclude="*.fla|*.mp3|*.wav" unless="web" />
 	<assets path='example_mods/funkin' rename='mods/funkin' embed='false'/>
+	<assets path='updater/export/linux/bin' rename='updater' embed='false' if="linux"/>
+	<assets path='updater/export/windows/bin' rename='updater' embed='false' if="windows"/>
 	<!--
 		AUTOMATICALLY MOVING EXAMPLE MODS INTO THE BUILD CAUSES ISSUES
 		Currently, this line will add the mod files to the library manifest,
