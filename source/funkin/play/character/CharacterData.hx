@@ -207,22 +207,27 @@ class CharacterDataParser
     var charScriptClass:String = characterScriptedClass.get(charId);
 
     var char:BaseCharacter;
-
+    @:privateAccess
     if (charScriptClass != null)
     {
       switch (charData.renderType)
       {
         case CharacterRenderType.AnimateAtlas:
           char = ScriptedAnimateAtlasCharacter.init(charScriptClass, charId);
+          char.ghost = ScriptedAnimateAtlasCharacter.init(charScriptClass, charId);
         case CharacterRenderType.MultiSparrow:
           char = ScriptedMultiSparrowCharacter.init(charScriptClass, charId);
+          char.ghost = ScriptedMultiSparrowCharacter.init(charScriptClass, charId);
         case CharacterRenderType.Sparrow:
           char = ScriptedSparrowCharacter.init(charScriptClass, charId);
+          char.ghost = ScriptedSparrowCharacter.init(charScriptClass, charId);
         case CharacterRenderType.Packer:
           char = ScriptedPackerCharacter.init(charScriptClass, charId);
+          char.ghost = ScriptedPackerCharacter.init(charScriptClass, charId);
         default:
           // We're going to assume that the script class does the rendering.
           char = ScriptedBaseCharacter.init(charScriptClass, charId, CharacterRenderType.Custom);
+          char.ghost = ScriptedBaseCharacter.init(charScriptClass, charId, CharacterRenderType.Custom);
       }
     }
     else
@@ -231,15 +236,20 @@ class CharacterDataParser
       {
         case CharacterRenderType.AnimateAtlas:
           char = new AnimateAtlasCharacter(charId);
+          char.ghost = new AnimateAtlasCharacter(charId);
         case CharacterRenderType.MultiSparrow:
           char = new MultiSparrowCharacter(charId);
+          char.ghost = new MultiSparrowCharacter(charId);
         case CharacterRenderType.Sparrow:
           char = new SparrowCharacter(charId);
+          char.ghost = new SparrowCharacter(charId);
         case CharacterRenderType.Packer:
           char = new PackerCharacter(charId);
+          char.ghost = new PackerCharacter(charId);
         default:
           trace('[WARN] Creating character with undefined renderType ${charData.renderType}');
           char = new BaseCharacter(charId, CharacterRenderType.Custom);
+          char.ghost = new BaseCharacter(charId, CharacterRenderType.Custom);
       }
     }
 
@@ -252,6 +262,8 @@ class CharacterDataParser
     trace('Successfully instantiated character (${debug ? 'debug' : 'stable'}): ${charId}');
 
     char.debug = debug;
+    @:privateAccess
+    char.ghost.debug = debug;
 
     // Call onCreate only in the fetchCharacter() function, not at application initialization.
     ScriptEventDispatcher.callEvent(char, new ScriptEvent(CREATE));

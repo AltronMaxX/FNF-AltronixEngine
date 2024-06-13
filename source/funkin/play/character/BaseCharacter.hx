@@ -1,5 +1,8 @@
 package funkin.play.character;
 
+import funkin.data.song.SongData.SongNoteData;
+import flixel.tweens.FlxEase;
+import flixel.tweens.FlxTween;
 import flixel.math.FlxPoint;
 import funkin.modding.events.ScriptEvent;
 import funkin.play.character.CharacterData.CharacterDataParser;
@@ -17,6 +20,9 @@ class BaseCharacter extends Bopper
   // Metadata about a character.
   public var characterId(default, null):String;
   public var characterName(default, null):String;
+
+  var lastNoteData:SongNoteData = null;
+  var ghost:BaseCharacter;
 
   /**
    * Whether the player is an active character (Boyfriend) or not.
@@ -295,6 +301,13 @@ class BaseCharacter extends Bopper
   {
     super.onCreate(event);
 
+    if (ghost != null)
+    {
+      ghost.alpha = 0;
+      ghost.scale.copyFrom(this.scale);
+      ghost.updateHitbox();
+    }
+
     // Make sure we are playing the idle animation...
     this.dance(true);
     // ...then update the hitbox so that this.width and this.height are correct.
@@ -312,6 +325,7 @@ class BaseCharacter extends Bopper
     // trace('Combo note counts: ' + this.comboNoteCounts);
     // trace('Drop note counts: ' + this.dropNoteCounts);
 
+    if (ghost != null) ghost.onCreate(event);
     super.onCreate(event);
   }
 
@@ -403,6 +417,9 @@ class BaseCharacter extends Bopper
       holdTimer = 0;
       // super.onBeatHit handles the regular `dance()` calls.
     }
+
+    if (ghost != null) ghost.onUpdate(event);
+
     FlxG.watch.addQuick('holdTimer-${characterId}', holdTimer);
   }
 
@@ -479,6 +496,8 @@ class BaseCharacter extends Bopper
     return false;
   }
 
+  var ghostTween:FlxTween;
+
   /**
    * Every time a note is hit, check if the note is from the same strumline.
    * If it is, then play the sing animation.
@@ -487,17 +506,57 @@ class BaseCharacter extends Bopper
   {
     super.onNoteHit(event);
 
+    if (lastNoteData == null) lastNoteData = event.note.noteData;
+
     if (event.note.noteData.getMustHitNote() && characterType == BF)
     {
       // If the note is from the same strumline, play the sing animation.
       this.playSingAnimation(event.note.noteData.getDirection(), false);
       holdTimer = 0;
+
+      if (event.note.noteData.time == lastNoteData.time
+        && event.note.noteData.getDirection() != lastNoteData.getDirection()
+        && ghost != null)
+      {
+        if (ghostTween != null) ghostTween.cancel();
+        ghost.alpha = 0.8;
+        ghost.playSingAnimation(lastNoteData.getDirection(), true);
+        ghost.holdTimer = 0;
+        ghostTween = FlxTween.tween(ghost, {alpha: 0}, 0.75,
+          {
+            ease: FlxEase.linear,
+            onComplete: function(twn:FlxTween) {
+              ghostTween = null;
+            }
+          });
+      }
+
+      lastNoteData = event.note.noteData;
     }
     else if (!event.note.noteData.getMustHitNote() && characterType == DAD)
     {
       // If the note is from the same strumline, play the sing animation.
       this.playSingAnimation(event.note.noteData.getDirection(), false);
       holdTimer = 0;
+
+      if (event.note.noteData.time == lastNoteData.time
+        && event.note.noteData.getDirection() != lastNoteData.getDirection()
+        && ghost != null)
+      {
+        if (ghostTween != null) ghostTween.cancel();
+        ghost.alpha = 0.8;
+        ghost.playSingAnimation(lastNoteData.getDirection(), true);
+        ghost.holdTimer = 0;
+        ghostTween = FlxTween.tween(ghost, {alpha: 0}, 0.75,
+          {
+            ease: FlxEase.linear,
+            onComplete: function(twn:FlxTween) {
+              ghostTween = null;
+            }
+          });
+      }
+
+      lastNoteData = event.note.noteData;
     }
   }
 
@@ -566,6 +625,7 @@ class BaseCharacter extends Bopper
   public override function onDestroy(event:ScriptEvent):Void
   {
     this.characterType = OTHER;
+    if (ghost != null) ghost.onDestroy(event);
   }
 
   /**
@@ -586,6 +646,19 @@ class BaseCharacter extends Bopper
   {
     // FlxG.watch.addQuick('playAnim(${characterName})', name);
     super.playAnimation(name, restart, ignoreOther, reversed);
+  }
+
+  override public function draw()
+  {
+    if (ghost != null)
+    {
+      ghost.x = x;
+      ghost.y = y;
+      ghost.flipX = flipX;
+      ghost.flipY = flipY;
+      if (ghost.alpha > 0.0) ghost.draw();
+    }
+    super.draw();
   }
 }
 
