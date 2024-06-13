@@ -467,6 +467,11 @@ class PlayState extends MusicBeatSubState
   var scoreText:ScoreText;
 
   /**
+   * The FlxText which displays judgements that you got during song.
+  **/
+  var judgementsText:FlxText;
+
+  /**
    * The bar which displays the song position.
    */
   var songPositionBar:SongPosBar;
@@ -1590,9 +1595,22 @@ class PlayState extends MusicBeatSubState
     scoreText.zIndex = 851;
     add(scoreText);
 
+    judgementsText = new FlxText(20, 0, 0, "", 20);
+    judgementsText.setFormat(Paths.font('vcr.ttf'), 20, FlxColor.WHITE, LEFT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+    judgementsText.borderSize = 2;
+    judgementsText.borderQuality = 2;
+    judgementsText.scrollFactor.set();
+    judgementsText.zIndex = 851;
+    judgementsText.screenCenter(Y);
+    judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
+      + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
+    if (Preferences.judgementsText)
+      add(judgementsText);
+
     // Move the health bar to the HUD camera.
     healthBar.cameras = [camHUD];
     healthBarBG.cameras = [camHUD];
+    judgementsText.cameras = [camHUD];
   }
 
   /**
@@ -2706,6 +2724,8 @@ class PlayState extends MusicBeatSubState
     }
 
     accuracy = Math.max(0, (totalNoteModifiers / totalNotes) * 100);
+    judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
+      + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
 
     health += healthChange;
     if (isComboBreak)

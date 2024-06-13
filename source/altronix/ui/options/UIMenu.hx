@@ -27,5 +27,8 @@ class UIMenu extends PreferencesMenu
     createPrefItemCheckbox('Song Position Bar', 'Adds song position ber', function(value:Bool):Void {
       Preferences.songPositionBar = value;
     }, Preferences.songPositionBar);
+    createPrefItemCheckbox('Judgements Counter Text', 'Adds judgement counter text', function(value:Bool):Void {
+      Preferences.judgementsText = value;
+    }, Preferences.judgementsText);
   }
 }

@@ -100,6 +100,7 @@ class Save
           advancedScoreText: true,
           songPositionBar: false,
           menuMusic: 'freakyMenu',
+          judgementsText: false,
 
           controls:
             {
@@ -1129,6 +1130,12 @@ typedef SaveDataOptions =
    * @default `freakyMenu`
    */
   var menuMusic:String;
+
+  /**
+   * Adds judgements counter text.
+   * @default `false`
+   */
+  var judgementsText:Bool;
 
   var controls:
     {

@@ -205,6 +205,25 @@ class Preferences
   }
 
   /**
+   * Adds judgements counter text.
+   * @default `false`
+   */
+  public static var judgementsText(get, set):Bool;
+
+  static function get_judgementsText():Bool
+  {
+    return Save?.instance?.options?.judgementsText ?? false;
+  }
+
+  static function set_judgementsText(value:Bool):Bool
+  {
+    var save:Save = Save.instance;
+    save.options.judgementsText = value;
+    save.flush();
+    return value;
+  }
+
+  /**
    * Loads the user's preferences from the save data and apply them.
    */
   public static function init():Void
