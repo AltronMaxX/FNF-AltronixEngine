@@ -7,3 +7,6 @@
 [submodule "assets"]
 	path = assets
 	url = https://github.com/Altronix-Team/altronix.funkin_assets.git
+[submodule "updater"]
+	path = updater
+	url = https://github.com/Altronix-Team/AltronixEngine-Updater.git
