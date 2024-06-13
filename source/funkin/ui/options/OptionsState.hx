@@ -271,4 +271,5 @@ enum abstract PageName(String)
   var Colors = "colors";
   var Mods = "mods";
   var Preferences = "preferences";
+  var UI = 'ui';
 }
