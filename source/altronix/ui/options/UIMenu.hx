@@ -28,17 +28,4 @@ class UIMenu extends PreferencesMenu
       Preferences.songPositionBar = value;
     }, Preferences.songPositionBar);
   }
-
-  override function update(elapsed:Float):Void
-  {
-    super.update(elapsed);
-
-    updateControls();
-
-    items.forEach(function(daItem:TextMenuItem) {
-      if (items.selectedItem == daItem) daItem.x = 150;
-      else
-        daItem.x = 120;
-    });
-  }
 }
