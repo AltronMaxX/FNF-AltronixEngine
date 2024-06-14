@@ -51,25 +51,6 @@ class Scoring
   }
 
   /**
-   * Determine the modifier a note receives under a given scoring system. Need for accuracy calculation.
-   * @param msTiming The difference between the note's time and when it was hit.
-   * @param scoringSystem The scoring system to use.
-   * @return The modifier the note receives.
-   */
-  public static function getNoteModifier(msTiming:Float, scoringSystem:ScoringSystem = PBOT1):Float
-  {
-    return switch (scoringSystem)
-    {
-      case LEGACY: noteModifierLEGACY(msTiming);
-      case WEEK7: noteModifierWEEK7(msTiming);
-      case PBOT1: noteModifierPBOT1(msTiming);
-      default:
-        FlxG.log.error('Unknown scoring system: ${scoringSystem}');
-        0;
-    }
-  }
-
-  /**
    * Determine the judgement a note receives under a given scoring system.
    * @param msTiming The difference between the note's time and when it was hit.
    * @param scoringSystem The scoring system to use.
@@ -107,16 +88,6 @@ class Scoring
    * The minimum score a note can receive while still being considered a hit.
    */
   public static final PBOT1_MIN_SCORE:Float = 9.0;
-
-  /**
-   * The maximum modifier a note can receive.
-   */
-  public static final PBOT1_MAX_MODIFIER:Int = 1;
-
-  /**
-   * The minimum modifier a note can receive while still being considered a hit.
-   */
-  public static final PBOT1_MIN_MODIFIER:Float = 0.1;
 
   /**
    * The score a note receives when it is missed.
@@ -204,25 +175,6 @@ class Scoring
       default:
         FlxG.log.warn('Missed note: Bad timing ($absTiming < $PBOT1_SHIT_THRESHOLD)');
         'miss';
-    }
-  }
-
-  static function noteModifierPBOT1(msTiming:Float):Float
-  {
-    // Absolute value because otherwise late hits are always given the max score.
-    var absTiming:Float = Math.abs(msTiming);
-
-    return switch (absTiming)
-    {
-      case(_ > PBOT1_MISS_THRESHOLD) => true:
-        PBOT1_MIN_MODIFIER;
-      case(_ < PBOT1_PERFECT_THRESHOLD) => true:
-        PBOT1_MAX_MODIFIER;
-      default:
-        // Fancy equation.
-        var factor:Float = 1.0 - (1.0 / (1.0 + Math.exp(-PBOT1_SCORING_SLOPE * (absTiming - PBOT1_SCORING_OFFSET))));
-
-        factor < 0.1 ? PBOT1_MIN_MODIFIER : factor;
     }
   }
 
@@ -315,25 +267,6 @@ class Scoring
     }
   }
 
-  static function noteModifierLEGACY(msTiming:Float):Float
-  {
-    var absTiming:Float = Math.abs(msTiming);
-
-    return switch (absTiming)
-    {
-      case(_ < LEGACY_HIT_WINDOW * LEGACY_SICK_THRESHOLD) => true:
-        LEGACY_SICK_SCORE / 350;
-      case(_ < LEGACY_HIT_WINDOW * LEGACY_GOOD_THRESHOLD) => true:
-        LEGACY_GOOD_SCORE / 350;
-      case(_ < LEGACY_HIT_WINDOW * LEGACY_BAD_THRESHOLD) => true:
-        LEGACY_BAD_SCORE / 350;
-      case(_ < LEGACY_HIT_WINDOW * LEGACY_SHIT_THRESHOLD) => true:
-        LEGACY_SHIT_SCORE / 350;
-      default:
-        0;
-    }
-  }
-
   /**
    * The window of time in which a note is considered to be hit, on the Funkin Classic scoring system.
    * Same as L 10 frames at 60fps, or ~166ms.
@@ -411,25 +344,6 @@ class Scoring
     {
       FlxG.log.warn('Missed note: Bad timing ($absTiming < $WEEK7_HIT_WINDOW)');
       return 'miss';
-    }
-  }
-
-  static function noteModifierWEEK7(msTiming:Float):Float
-  {
-    var absTiming:Float = Math.abs(msTiming);
-
-    return switch (absTiming)
-    {
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_SICK_THRESHOLD) => true:
-        LEGACY_SICK_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_GOOD_THRESHOLD) => true:
-        LEGACY_GOOD_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW * WEEK7_BAD_THRESHOLD) => true:
-        LEGACY_BAD_SCORE / 350;
-      case(_ < WEEK7_HIT_WINDOW) => true:
-        LEGACY_SHIT_SCORE / 350;
-      default:
-        0;
     }
   }
 

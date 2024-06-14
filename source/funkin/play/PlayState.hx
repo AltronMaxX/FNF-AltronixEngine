@@ -434,12 +434,6 @@ class PlayState extends MusicBeatSubState
   var initialized:Bool = false;
 
   /**
-   * Stores all note modifiers.
-   * Used for accuracy calculation
-  **/
-  var totalNoteModifiers:Float = 0.0;
-
-  /**
    * Counts all player passed notes.
    * Used for accuracy calculation
   **/
@@ -2483,8 +2477,6 @@ class PlayState extends MusicBeatSubState
 
     var score = Scoring.scoreNote(noteDiff, PBOT1);
     var daRating = Scoring.judgeNote(noteDiff, PBOT1);
-    totalNoteModifiers += Scoring.getNoteModifier(noteDiff, PBOT1);
-    totalNotes++;
 
     var healthChange = 0.0;
     var isComboBreak = false;
@@ -2723,7 +2715,8 @@ class PlayState extends MusicBeatSubState
         Highscore.tallies.missed += 1;
     }
 
-    accuracy = Math.max(0, (totalNoteModifiers / totalNotes) * 100);
+    accuracy = Math.max(0, ((Highscore.tallies.sick + Highscore.tallies.good * 0.75) + 1) / //Good notes are not so good for 100% accuracy ;)
+      ((Highscore.tallies.totalNotesHit + Highscore.tallies.missed) + 1) * 100);
     judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
       + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
 
