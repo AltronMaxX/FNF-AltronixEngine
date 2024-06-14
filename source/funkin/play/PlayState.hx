@@ -2715,7 +2715,7 @@ class PlayState extends MusicBeatSubState
         Highscore.tallies.missed += 1;
     }
 
-    accuracy = Math.max(0, ((Highscore.tallies.sick + Highscore.tallies.good * 0.75) + 1) / //Good notes are not so good for 100% accuracy ;)
+    accuracy = Math.max(0, ((Highscore.tallies.sick + Highscore.tallies.good) + 1)
       ((Highscore.tallies.totalNotesHit + Highscore.tallies.missed) + 1) * 100);
     judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
       + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
