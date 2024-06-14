@@ -103,6 +103,13 @@
       "version": "4.3.2"
     },
     {
+      "name": "openfl",
+      "type": "git",
+      "dir": null,
+      "ref": "228c1b5063911e2ad75cef6e3168ef0a4b9f9134",
+      "url": "https://github.com/FunkinCrew/openfl"
+    },
+    {
       "name": "hxcpp-debug-server",
       "type": "git",
       "dir": "hxcpp-debug-server",
@@ -155,13 +162,6 @@
       "dir": "src",
       "ref": "f61be7f7ba796595f45023ca65164a485aba0e7e",
       "url": "https://github.com/FunkinCrew/MassiveUnit"
-    },
-    {
-      "name": "openfl",
-      "type": "git",
-      "dir": null,
-      "ref": "228c1b5063911e2ad75cef6e3168ef0a4b9f9134",
-      "url": "https://github.com/FunkinCrew/openfl"
     },
     {
       "name": "polymod",
