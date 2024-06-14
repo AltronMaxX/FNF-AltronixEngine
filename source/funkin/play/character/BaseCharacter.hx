@@ -520,7 +520,7 @@ class BaseCharacter extends Bopper
       {
         if (ghostTween != null) ghostTween.cancel();
         ghost.alpha = 0.8;
-        ghost.playSingAnimation(lastNoteData.getDirection(), true);
+        ghost.playSingAnimation(lastNoteData.getDirection(), false);
         ghost.holdTimer = 0;
         ghostTween = FlxTween.tween(ghost, {alpha: 0}, 0.75,
           {
@@ -545,7 +545,7 @@ class BaseCharacter extends Bopper
       {
         if (ghostTween != null) ghostTween.cancel();
         ghost.alpha = 0.8;
-        ghost.playSingAnimation(lastNoteData.getDirection(), true);
+        ghost.playSingAnimation(lastNoteData.getDirection(), false);
         ghost.holdTimer = 0;
         ghostTween = FlxTween.tween(ghost, {alpha: 0}, 0.75,
           {
