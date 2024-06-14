@@ -917,6 +917,8 @@ class PlayState extends MusicBeatSubState
       songScore = 0;
       accuracy = 0;
       Highscore.tallies.combo = 0;
+      scoreText.updateTexts();
+      judgementsText.text = 'Sicks: 0\nGoods: 0 \nBads: 0\nShits: 0\nMisses: 0';
       Countdown.performCountdown(currentStageId.startsWith('school'));
 
       needsReset = false;
@@ -1602,10 +1604,8 @@ class PlayState extends MusicBeatSubState
     judgementsText.scrollFactor.set();
     judgementsText.zIndex = 851;
     judgementsText.screenCenter(Y);
-    judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
-      + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
-    if (Preferences.judgementsText)
-      add(judgementsText);
+    judgementsText.text = 'Sicks: 0\nGoods: 0 \nBads: 0\nShits: 0\nMisses: 0';
+    if (Preferences.judgementsText) add(judgementsText);
 
     // Move the health bar to the HUD camera.
     healthBar.cameras = [camHUD];

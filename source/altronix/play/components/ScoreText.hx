@@ -90,7 +90,7 @@ class ScoreText extends FlxTypedGroup<FlxText>
 
       updateXPosition(x);
 
-      if (textColor != getTextColor(PlayState.instance.accuracy) && PlayState.instance.accuracy > 0)
+      if (textColor != getTextColor(PlayState.instance.accuracy) && PlayState.instance.accuracy >= 0)
       {
         textColor = getTextColor(PlayState.instance.accuracy);
       }
@@ -199,7 +199,8 @@ class ScoreText extends FlxTypedGroup<FlxText>
       accuracy >= 80, // A - AAAAA
       accuracy >= 70, // B - A
       accuracy >= 60, // D - C
-      accuracy < 60 // D
+      accuracy < 60 && accuracy > 0, // D
+      accuracy == 0 // Default
     ];
 
     for (i in 0...wifeConditions.length)
@@ -216,6 +217,8 @@ class ScoreText extends FlxTypedGroup<FlxText>
             return FlxColor.fromString('0xFF4500');
           case 3:
             return FlxColor.fromString('0x8B0000');
+          case 4:
+            return FlxColor.WHITE;
         }
         break;
       }
