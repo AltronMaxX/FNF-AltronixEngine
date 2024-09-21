@@ -325,10 +325,6 @@ class FreeplayState extends MusicBeatSubState
     isDebug = true;
     #end
 
-    if (prepForNewRank == false)
-    {
-      altronix.audio.MenuMusicHelper.playMenuMusic();
-    }
     // Block input until the intro finishes.
     busy = true;
 
