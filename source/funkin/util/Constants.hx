@@ -46,12 +46,12 @@ class Constants
   #if FEATURE_DEBUG_FUNCTIONS
   static function get_VERSION():String
   {
-    return 'v${Application.current.meta.get('version')} (${GIT_BRANCH} : ${GIT_HASH}${GIT_HAS_LOCAL_CHANGES ? ' : MODIFIED' : ''})' + VERSION_SUFFIX;
+    return 'v(${GIT_BRANCH} : ${GIT_HASH}${GIT_HAS_LOCAL_CHANGES ? ' : MODIFIED' : ''})' + VERSION_SUFFIX;
   }
   #else
   static function get_VERSION():String
   {
-    return 'v${Application.current.meta.get('version')}' + VERSION_SUFFIX;
+    return 'v${GIT_HASH}' + VERSION_SUFFIX;
   }
   #end
 

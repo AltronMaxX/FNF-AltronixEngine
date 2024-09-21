@@ -30,13 +30,13 @@ class Project extends HXProject {
 	/**
 	 * The game's name. Used as the default window title.
 	 */
-	static final TITLE:String = "Friday Night Funkin'";
+	static final TITLE:String = "FNF: AltronixEngine";
 
 	/**
 	 * The name of the generated executable file.
 	 * For example, `"Funkin"` will create a file called `Funkin.exe`.
 	 */
-	static final EXECUTABLE_NAME:String = "Funkin";
+	static final EXECUTABLE_NAME:String = "FNF-AE";
 
 	/**
 	 * The relative location of the source code.
@@ -64,7 +64,7 @@ class Project extends HXProject {
 	 * The company name for the game.
 	 * This appears in metadata in places I think.
 	 */
-	static final COMPANY:String = "The Funkin' Crew";
+	static final COMPANY:String = "AltronMaxX";
 
   /**
    * Path to the Haxe script run before building the game.
@@ -252,7 +252,7 @@ class Project extends HXProject {
 	 */
 	function flair() {
 		// TODO: Implement this.
-		info("Friday Night Funkin'");
+		info("Friday Night Funkin': Altronix Engine");
 		info("Initializing build...");
 
 		info("Target Version: " + VERSION);
@@ -268,7 +268,7 @@ class Project extends HXProject {
 	 */
 	function configureApp() {
 		this.meta.title = TITLE;
-		this.meta.version = VERSION;
+		this.meta.version = getGitCommit(); //Will use commit hash as version from now.
 		this.meta.packageName = PACKAGE_NAME;
 		this.meta.company = COMPANY;
 
