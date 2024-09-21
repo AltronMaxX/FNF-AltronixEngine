@@ -28,7 +28,7 @@ jobs:
       - name: Setting up Haxe
         uses: krdlab/setup-haxe@master
         with:
-          haxe-version: 4.3.4
+          haxe-version: 4.3.6
 
       #Took caching functions from Codename Engine
       - name: Restore existing build cache for faster compilation
@@ -48,17 +48,22 @@ jobs:
           haxelib install hmm --quiet
         shell: cmd
 
-      - name: Build updater
+      - name: Setup HXCPP dev commit
         run: |
-          cd updater
-          haxelib run hmm install --quiet
-          haxelib run lime build windows
-          cd ..
-        shell: cmd
+          cd .haxelib/hxcpp/git/tools/hxcpp
+          haxe compile.hxml
+          cd ../../../../..
+
+      #- name: Build updater
+        #run: |
+          #cd updater
+          #haxelib run hmm install --quiet
+          #haxelib run lime build windows
+          #cd ..
+        #shell: cmd
 
       - name: Build engine
         run: |
-          haxelib run hmm install --quiet
           haxelib run lime build windows
         shell: cmd
 
