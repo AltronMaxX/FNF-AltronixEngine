@@ -255,7 +255,7 @@ class Project extends HXProject {
 		info("Friday Night Funkin': Altronix Engine");
 		info("Initializing build...");
 
-		info("Target Version: " + VERSION);
+		info("Target FNF Version: " + VERSION);
 		info("Git Branch:     " + getGitBranch());
 		info("Git Commit:     " + getGitCommit());
 		info("Git Modified?   " + getGitModified());
