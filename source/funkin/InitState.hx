@@ -283,7 +283,7 @@ class InitState extends FlxState
     }
     else
     {
-      if (altronix.updater.UpdateChecker.needUpdate())
+      if (false /*altronix.updater.UpdateChecker.needUpdate()*/)
       {
         FlxG.switchState(() -> new altronix.ui.UpdateState());
       }
