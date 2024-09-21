@@ -46,6 +46,7 @@ jobs:
           haxelib setup C:/haxelib
           haxelib install hxcpp > /dev/null --quiet
           haxelib install hmm --quiet
+          haxelib run hmm install
         shell: cmd
 
       - name: Setup HXCPP dev commit
