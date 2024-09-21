@@ -1214,8 +1214,10 @@ typedef SaveDataOptions =
    * @default `false`
    */
   var judgementsText:Bool;
+
+   /**
    * If we want the framerate to be unlocked on HTML5.
-   * @default `false
+   * @default `false`
    */
   var unlockedFramerate:Bool;
 

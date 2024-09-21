@@ -1,12 +1,12 @@
 package funkin.ui.options;
 
-import funkin.audio.FunkinSound;
 import flixel.FlxCamera;
 import flixel.FlxObject;
 import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup.FlxTypedSpriteGroup;
-import funkin.graphics.FunkinCamera;
 import funkin.ui.AtlasText.AtlasFont;
+import funkin.ui.options.OptionsState.Page;
+import funkin.graphics.FunkinCamera;
 import funkin.ui.TextMenuList.TextMenuItem;
 import funkin.audio.FunkinSound;
 import funkin.ui.options.MenuItemEnums;

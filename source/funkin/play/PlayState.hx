@@ -2,14 +2,18 @@ package funkin.play;
 
 import altronix.play.components.ScoreText;
 import altronix.play.components.SongPosBar;
-import flixel.FlxCamera;
-import flixel.FlxObject;
-import flixel.FlxSubState;
+import flixel.addons.display.FlxPieDial;
 import flixel.addons.transition.FlxTransitionableState;
 import flixel.addons.transition.Transition;
+import flixel.FlxCamera;
+import flixel.FlxObject;
+import flixel.FlxState;
+import flixel.FlxSubState;
 import flixel.math.FlxMath;
 import flixel.math.FlxPoint;
+import flixel.math.FlxRect;
 import flixel.text.FlxText;
+import flixel.tweens.FlxEase;
 import flixel.tweens.FlxTween;
 import flixel.ui.FlxBar;
 import flixel.util.FlxColor;
@@ -20,6 +24,7 @@ import funkin.audio.FunkinSound;
 import funkin.audio.VoicesGroup;
 import funkin.data.dialogue.conversation.ConversationRegistry;
 import funkin.data.event.SongEventRegistry;
+import funkin.data.notestyle.NoteStyleData;
 import funkin.data.notestyle.NoteStyleRegistry;
 import funkin.data.song.SongData.SongCharacterData;
 import funkin.data.song.SongData.SongEventData;
@@ -28,6 +33,7 @@ import funkin.data.song.SongRegistry;
 import funkin.data.stage.StageRegistry;
 import funkin.graphics.FunkinCamera;
 import funkin.graphics.FunkinSprite;
+import funkin.Highscore.Tallies;
 import funkin.input.PreciseInputManager;
 import funkin.modding.events.ScriptEvent;
 import funkin.modding.events.ScriptEventDispatcher;
@@ -36,18 +42,26 @@ import funkin.play.character.CharacterData.CharacterDataParser;
 import funkin.play.components.ComboMilestone;
 import funkin.play.components.HealthIcon;
 import funkin.play.components.PopUpStuff;
+import funkin.play.cutscene.dialogue.Conversation;
 import funkin.play.cutscene.VanillaCutscenes;
 import funkin.play.cutscene.VideoCutscene;
-import funkin.play.cutscene.dialogue.Conversation;
 import funkin.play.notes.NoteDirection;
+import funkin.play.notes.NoteSplash;
 import funkin.play.notes.NoteSprite;
+import funkin.play.notes.notestyle.NoteStyle;
 import funkin.play.notes.Strumline;
 import funkin.play.notes.SustainTrail;
 import funkin.play.notes.notekind.NoteKindManager;
-import funkin.ui.MusicBeatSubState;
+import funkin.play.scoring.Scoring;
+import funkin.play.song.Song;
+import funkin.play.stage.Stage;
+import funkin.save.Save;
 import funkin.ui.debug.charting.ChartEditorState;
 import funkin.ui.debug.stage.StageOffsetSubState;
 import funkin.ui.mainmenu.MainMenuState;
+import funkin.ui.MusicBeatSubState;
+import funkin.ui.options.PreferencesMenu;
+import funkin.ui.story.StoryMenuState;
 import funkin.ui.transition.LoadingState;
 import funkin.util.SerializerUtil;
 import haxe.Int64;
@@ -2045,7 +2059,7 @@ class PlayState extends MusicBeatSubState
   {
     scoreText.updateTexts();
     // TODO: Add functionality for modules to update the score text.
-    if (isBotPlayMode)
+    /*if (isBotPlayMode)
     {
       scoreText.text = 'Bot Play Enabled';
     }
@@ -2054,7 +2068,7 @@ class PlayState extends MusicBeatSubState
       // TODO: Add an option for this maybe?
       var commaSeparated:Bool = true;
       scoreText.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, commaSeparated)}';
-    }
+    }*/
   }
 
   /**
@@ -3094,7 +3108,6 @@ class PlayState extends MusicBeatSubState
     GameOverSubState.reset();
     PauseSubState.reset();
     Countdown.reset();
-    PopUpStuff.reset();
 
     // Clear the static reference to this state.
     instance = null;
