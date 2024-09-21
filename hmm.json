@@ -8,13 +8,6 @@
       "url": "https://github.com/FunkinCrew/FlxPartialSound.git"
     },
     {
-      "name": "discord_rpc",
-      "type": "git",
-      "dir": null,
-      "ref": "2d83fa863ef0c1eace5f1cf67c3ac315d1a3a8a5",
-      "url": "https://github.com/FunkinCrew/linc_discord-rpc"
-    },
-    {
       "name": "flixel",
       "type": "git",
       "dir": null,
@@ -102,18 +95,18 @@
       "url": "https://github.com/HaxeFoundation/hxcpp"
     },
     {
-      "name": "openfl",
-      "type": "git",
-      "dir": null,
-      "ref": "228c1b5063911e2ad75cef6e3168ef0a4b9f9134",
-      "url": "https://github.com/FunkinCrew/openfl"
-    },
-    {
       "name": "hxcpp-debug-server",
       "type": "git",
       "dir": "hxcpp-debug-server",
       "ref": "147294123f983e35f50a966741474438069a7a8f",
       "url": "https://github.com/FunkinCrew/hxcpp-debugger"
+    },
+    {
+      "name": "hxdiscord_rpc",
+      "type": "git",
+      "dir": null,
+      "ref": "79955ce93f0392b245b3610b7697780c8618bc47",
+      "url": "https://github.com/FunkinCrew/hxdiscord_rpc.git"
     },
     {
       "name": "hxjsonast",

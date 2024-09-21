@@ -1,9 +1,9 @@
 package funkin.api.discord;
 
-import Sys.sleep;
 #if FEATURE_DISCORD_RPC
-import discord_rpc.DiscordRpc;
-import discord_rpc.DiscordRpc.DiscordUser;
+import Sys.sleep;
+import hxdiscord_rpc.Discord;
+import hxdiscord_rpc.Types;
 #end
 
 class DiscordClient
@@ -12,48 +12,49 @@ class DiscordClient
   public function new()
   {
     trace("Discord Client starting...");
-    DiscordRpc.start(
-      {
-        clientID: "489437279799083028",
-        onReady: onReady,
-        onError: onError,
-        onDisconnected: onDisconnected
-      });
+    final handlers:DiscordEventHandlers = DiscordEventHandlers.create();
+    handlers.ready = cpp.Function.fromStaticFunction(onReady);
+    handlers.disconnected = cpp.Function.fromStaticFunction(onDisconnected);
+    handlers.errored = cpp.Function.fromStaticFunction(onError);
+    Discord.initialize("489437279799083028", handlers, true, null);
     trace("Discord Client started.");
 
     while (true)
     {
-      DiscordRpc.process();
+      Discord.updateConnection();
+
+      Discord.runCallbacks();
+
       sleep(2);
     }
 
-    DiscordRpc.shutdown();
+    Discord.shutdown();
   }
 
   public static function shutdown()
   {
-    DiscordRpc.shutdown();
+    Discord.shutdown();
   }
 
-  static function onReady(request:Any)
+  static function onReady(request:cpp.RawConstPointer<DiscordUser>)
   {
-    DiscordRpc.presence(
-      {
-        details: "In the Menus",
-        state: null,
-        largeImageKey: 'icon',
-        largeImageText: "Friday Night Funkin'"
-      });
+    final discordPresence:DiscordRichPresence = DiscordRichPresence.create();
+    discordPresence.type = DiscordActivityType_Playing;
+    discordPresence.state = null;
+    discordPresence.details = "In the Menus";
+    discordPresence.largeImageKey = "icon";
+    discordPresence.largeImageText = "Friday Night Funkin'";
+    Discord.updatePresence(discordPresence);
   }
 
-  static function onError(_code:Int, _message:String)
+  static function onError(errorCode:Int, message:cpp.ConstCharStar)
   {
-    trace('Error! $_code : $_message');
+    trace('Error! $errorCode : $message');
   }
 
-  static function onDisconnected(_code:Int, _message:String)
+  static function onDisconnected(errorCode:Int, message:cpp.ConstCharStar)
   {
-    trace('Disconnected! $_code : $_message');
+    trace('Disconnected! $errorCode : $message');
   }
 
   public static function initialize()
@@ -73,17 +74,16 @@ class DiscordClient
       endTimestamp = startTimestamp + endTimestamp;
     }
 
-    DiscordRpc.presence(
-      {
-        details: details,
-        state: state,
-        largeImageKey: 'icon',
-        largeImageText: "Friday Night Funkin'",
-        smallImageKey: smallImageKey,
-        // Obtained times are in milliseconds so they are divided so Discord can use it
-        startTimestamp: Std.int(startTimestamp / 1000),
-        endTimestamp: Std.int(endTimestamp / 1000)
-      });
+    final discordPresence:DiscordRichPresence = DiscordRichPresence.create();
+    discordPresence.type = DiscordActivityType_Playing;
+    discordPresence.state = state;
+    discordPresence.details = details;
+    discordPresence.largeImageKey = "icon";
+    discordPresence.largeImageText = "Friday Night Funkin'";
+    discordPresence.smallImageKey = smallImageKey;
+    discordPresence.startTimestamp = Std.int(startTimestamp / 1000);
+    discordPresence.endTimestamp = Std.int(endTimestamp / 1000);
+    Discord.updatePresence(discordPresence);
 
     // trace('Discord RPC Updated. Arguments: $details, $state, $smallImageKey, $hasStartTimestamp, $endTimestamp');
   }

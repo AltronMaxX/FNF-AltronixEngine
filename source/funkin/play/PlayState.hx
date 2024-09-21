@@ -1010,7 +1010,7 @@ class PlayState extends MusicBeatSubState
         }
 
         #if FEATURE_DISCORD_RPC
-        DiscordClient.changePresence(detailsPausedText, currentSong.song + ' (' + storyDifficultyText + ')', iconRPC);
+        DiscordClient.changePresence(detailsPausedText, currentSong + ' (' + storyDifficultyText + ')', iconRPC);
         #end
       }
     }
@@ -1311,7 +1311,7 @@ class PlayState extends MusicBeatSubState
       Countdown.resumeCountdown();
 
       #if FEATURE_DISCORD_RPC
-      if (startTimer.finished)
+      if (Countdown.countdownStep == AFTER)
       {
         DiscordClient.changePresence(detailsText, '${currentChart.songName} ($storyDifficultyText)', iconRPC, true,
           currentSongLengthMs - Conductor.instance.songPosition);
@@ -1344,7 +1344,7 @@ class PlayState extends MusicBeatSubState
     #end
 
     #if FEATURE_DISCORD_RPC
-    if (health > Constants.HEALTH_MIN && !paused && FlxG.autoPause)
+    if (health > Constants.HEALTH_MIN && !isGamePaused && FlxG.autoPause)
     {
       if (Conductor.instance.songPosition > 0.0) DiscordClient.changePresence(detailsText, currentSong
         + ' ('
@@ -1370,8 +1370,8 @@ class PlayState extends MusicBeatSubState
     #end
 
     #if FEATURE_DISCORD_RPC
-    if (health > Constants.HEALTH_MIN && !paused && FlxG.autoPause) DiscordClient.changePresence(detailsPausedText,
-      currentSong.song + ' (' + storyDifficultyText + ')', iconRPC);
+    if (health > Constants.HEALTH_MIN && !isGamePaused && FlxG.autoPause) DiscordClient.changePresence(detailsPausedText,
+      currentSong + ' (' + storyDifficultyText + ')', iconRPC);
     #end
 
     super.onFocusLost();
@@ -1805,8 +1805,8 @@ class PlayState extends MusicBeatSubState
   function initDiscord():Void
   {
     #if FEATURE_DISCORD_RPC
-    storyDifficultyText = difficultyString();
-    iconRPC = currentSong.player2;
+    storyDifficultyText = currentDifficulty;
+    iconRPC = currentStage.getDad().characterId;
 
     // To avoid having duplicate images in Discord assets
     switch (iconRPC)
@@ -2060,15 +2060,15 @@ class PlayState extends MusicBeatSubState
     scoreText.updateTexts();
     // TODO: Add functionality for modules to update the score text.
     /*if (isBotPlayMode)
-    {
-      scoreText.text = 'Bot Play Enabled';
-    }
-    else
-    {
-      // TODO: Add an option for this maybe?
-      var commaSeparated:Bool = true;
-      scoreText.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, commaSeparated)}';
-    }*/
+        {
+          scoreText.text = 'Bot Play Enabled';
+        }
+        else
+        {
+          // TODO: Add an option for this maybe?
+          var commaSeparated:Bool = true;
+          scoreText.text = 'Score: ${FlxStringUtil.formatMoney(songScore, false, commaSeparated)}';
+      }*/
   }
 
   /**
@@ -2701,8 +2701,7 @@ class PlayState extends MusicBeatSubState
         Highscore.tallies.missed += 1;
     }
 
-    accuracy = Math.max(0, ((Highscore.tallies.sick + Highscore.tallies.good) + 1) /
-      ((Highscore.tallies.totalNotesHit + Highscore.tallies.missed) + 1) * 100);
+    accuracy = Math.max(0, ((Highscore.tallies.sick + Highscore.tallies.good) + 1) / ((Highscore.tallies.totalNotesHit + Highscore.tallies.missed) + 1) * 100);
     judgementsText.text = 'Sicks: ${Highscore.tallies.sick}\nGoods: ${Highscore.tallies.good} '
       + '\nBads: ${Highscore.tallies.bad}\nShits: ${Highscore.tallies.shit}\nMisses: ${Highscore.tallies.missed}';
 

@@ -129,7 +129,7 @@ class InitState extends FlxState
     #if FEATURE_DISCORD_RPC
     DiscordClient.initialize();
 
-    Application.current.onExit.add(function(exitCode) {
+    lime.app.Application.current.onExit.add(function(exitCode) {
       DiscordClient.shutdown();
     });
     #end
