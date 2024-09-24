@@ -75,9 +75,8 @@ jobs:
       - name: Make release
         uses: softprops/action-gh-release@v1
         with:
-          name: Latest dev build from action with id ${{github.run_number}}
-          tag_name: Actions_Build_${{github.run_number}}
-          prerelease: true
+          name: Latest dev build [${{github.sha}}]
+          tag_name: Actions_Build_${{github.sha}}
           target_commitish: "develop"
           files: |
             engine.zip
