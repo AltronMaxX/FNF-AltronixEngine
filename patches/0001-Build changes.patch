@@ -1,0 +1,100 @@
+From e3d8be41aff5e75c0570ff564dc92b3952538f1f Mon Sep 17 00:00:00 2001
+From: AltronMaxX <max06112004@gmail.com>
+Date: Tue, 29 Oct 2024 20:29:17 +0400
+Subject: [PATCH] Build changes
+
+---
+ art                             |  2 +-
+ project.hxp                     | 12 ++++++------
+ source/funkin/util/Constants.hx |  6 +++---
+ 3 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/art b/art
+index 66572f85..fbd3e3df 160000
+--- a/art
++++ b/art
+@@ -1 +1 @@
+-Subproject commit 66572f85d826ce2ec1d45468c12733b161237ffa
++Subproject commit fbd3e3df77734606d88516770b71b56e6fa04bce
+diff --git a/project.hxp b/project.hxp
+index 2ec8ba44..7ae17864 100644
+--- a/project.hxp
++++ b/project.hxp
+@@ -30,13 +30,13 @@ class Project extends HXProject {
+ 	/**
+ 	 * The game's name. Used as the default window title.
+ 	 */
+-	static final TITLE:String = "Friday Night Funkin'";
++	static final TITLE:String = "FNF: AltronixEngine";
+ 
+ 	/**
+ 	 * The name of the generated executable file.
+ 	 * For example, `"Funkin"` will create a file called `Funkin.exe`.
+ 	 */
+-	static final EXECUTABLE_NAME:String = "Funkin";
++	static final EXECUTABLE_NAME:String = "FNF-AE";
+ 
+ 	/**
+ 	 * The relative location of the source code.
+@@ -64,7 +64,7 @@ class Project extends HXProject {
+ 	 * The company name for the game.
+ 	 * This appears in metadata in places I think.
+ 	 */
+-	static final COMPANY:String = "The Funkin' Crew";
++	static final COMPANY:String = "AltronMaxX";
+ 
+   /**
+    * Path to the Haxe script run before building the game.
+@@ -273,10 +273,10 @@ class Project extends HXProject {
+ 	 */
+ 	function flair() {
+ 		// TODO: Implement this.
+-		info("Friday Night Funkin'");
++		info("Friday Night Funkin': Altronix Engine");
+ 		info("Initializing build...");
+ 
+-		info("Target Version: " + VERSION);
++		info("Target FNF Version: " + VERSION);
+ 		info("Git Branch:     " + getGitBranch());
+ 		info("Git Commit:     " + getGitCommit());
+ 		info("Git Modified?   " + getGitModified());
+@@ -289,7 +289,7 @@ class Project extends HXProject {
+ 	 */
+ 	function configureApp() {
+ 		this.meta.title = TITLE;
+-		this.meta.version = VERSION;
++		this.meta.version = getGitCommit(); //Will use commit hash as version from now.
+ 		this.meta.packageName = PACKAGE_NAME;
+ 		this.meta.company = COMPANY;
+ 
+diff --git a/source/funkin/util/Constants.hx b/source/funkin/util/Constants.hx
+index d5bc987e..63bd6d80 100644
+--- a/source/funkin/util/Constants.hx
++++ b/source/funkin/util/Constants.hx
+@@ -19,7 +19,7 @@ class Constants
+    * The title of the game, for debug printing purposes.
+    * Change this if you're making an engine.
+    */
+-  public static final TITLE:String = "Friday Night Funkin'";
++  public static final TITLE:String = "FNF-AltronixEngine";
+ 
+   /**
+    * The current version number of the game.
+@@ -46,12 +46,12 @@ class Constants
+   #if FEATURE_DEBUG_FUNCTIONS
+   static function get_VERSION():String
+   {
+-    return 'v${Application.current.meta.get('version')} (${GIT_BRANCH} : ${GIT_HASH}${GIT_HAS_LOCAL_CHANGES ? ' : MODIFIED' : ''})' + VERSION_SUFFIX;
++    return 'v(${GIT_BRANCH} : ${GIT_HASH}${GIT_HAS_LOCAL_CHANGES ? ' : MODIFIED' : ''})' + VERSION_SUFFIX;
+   }
+   #else
+   static function get_VERSION():String
+   {
+-    return 'v${Application.current.meta.get('version')}' + VERSION_SUFFIX;
++    return 'v${GIT_HASH}' + VERSION_SUFFIX;
+   }
+   #end
+ 
+-- 
+2.43.0.windows.1
+
